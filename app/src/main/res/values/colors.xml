@@ -1,5 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="black">#FF000000</color>
-    <color name="white">#FFFFFFFF</color>
+<!--    <color name="black">#FF000000</color>-->
+<!--    <color name="white">#FFFFFFFF</color>-->
+<!--    <color name="soft_blue">#A8DADC</color>-->
+<!--    <color name="mint_green">#74C69D</color>-->
+<!--    <color name="dark_turquoise">#457B9D</color>-->
+<!--    <color name="light_gray">#F1FAEE</color>-->
+<!--    <color name="dark_gray">#1D3557</color>-->
+<!--    <color name="bg_blue">#E9F6FC</color>-->
+
+    <color name="bg_principal">#EEFAF7</color>
+    <color name="btn_principal">#5BA8A7</color>
+
+    <color name="verde_calmante">#A8D5BA</color>
+    <color name="azul_sereno">#A9D6E5</color>
+    <color name="gris_niebla">#E8E8E8</color>
+    <color name="blanco_puro">#FFFFFF</color>
+    <color name="azul_profundo">#3A6EA5</color>
+    <color name="verde_bosque_suave">#6BBF8D</color>
+    <color name="gris_oscuro_suave">#4A4A4A</color>
+    <color name="naranja_alerta">#FFA07A</color>
 </resources>

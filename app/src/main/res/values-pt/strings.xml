@@ -1,7 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">MiVet</string>
-    <string name="welcome">Bienvenido a</string>
-    <string name="description">Una aplicación para gestionar clínicas veterinarias y cuidar de las mascotas.</string>
+    <string name="welcome">Bem-vindo a</string>
+    <string name="description">Um aplicativo para gerenciar clínicas veterinárias e cuidar dos animais de estimação.</string>
     <string name="start">Iniciar</string>
     <string-array name="languages">
         <item>Inglés</item>
