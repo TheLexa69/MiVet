@@ -20,6 +20,7 @@ import java.util.Locale;
 public class MainActivity extends AppCompatActivity {
     private static final String TAG = "MainActivity";
     public static final String LANG = "LANG";
+
     private SharedPreferences sharedPreferences;
     private String currentLanguage;
 
@@ -58,6 +59,7 @@ public class MainActivity extends AppCompatActivity {
         languageSpinner.setAdapter(adapter);
 
         // Configurar el spinner para que seleccione el idioma correcto por defecto
+        Log.d("TAG", "Saved language: " + savedLanguage);
         if (savedLanguage.equals("en")) {
             languageSpinner.setSelection(0);
         } else if (savedLanguage.equals("es")) {
@@ -73,12 +75,15 @@ public class MainActivity extends AppCompatActivity {
                 switch (position) {
                     case 0:
                         selectedLang = "en";
+                        Log.d("TAG", "Selected language: English");
                         break;
                     case 1:
                         selectedLang = "es";
+                        Log.d("TAG", "Selected language: Spanish");
                         break;
                     case 2:
                         selectedLang = "pt";
+                        Log.d("TAG", "Selected language: Portuguese");
                         break;
                 }
 
@@ -90,6 +95,7 @@ public class MainActivity extends AppCompatActivity {
                             .putString(LANG, selectedLang)
                             .apply();
                     setLocale(selectedLang);
+                    recreate();
                 }
             }
 
