@@ -1,5 +1,6 @@
 package com.mivet.veterinaria;
 
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.content.res.Resources;
@@ -9,11 +10,14 @@ import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.Spinner;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.security.crypto.EncryptedSharedPreferences;
 import androidx.security.crypto.MasterKey;
+
+import com.mivet.veterinaria.auth.AuthActivity;
 
 import java.util.Locale;
 
@@ -23,13 +27,16 @@ public class MainActivity extends AppCompatActivity {
 
     private SharedPreferences sharedPreferences;
     private String currentLanguage;
+    private Button btnIniciar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        //Inicializacion de variables
         currentLanguage = Locale.getDefault().getLanguage();
+        btnIniciar = findViewById(R.id.btnIniciar);
 
         // Configuración de EncryptedSharedPreferences
         try {
@@ -103,6 +110,12 @@ public class MainActivity extends AppCompatActivity {
             public void onNothingSelected(AdapterView<?> parent) {
                 Log.d(TAG, "Nothing selected on spinner");
             }
+        });
+
+        btnIniciar.setOnClickListener(v -> {
+            // Aquí puedes iniciar la siguiente actividad
+             Intent intent = new Intent(MainActivity.this, AuthActivity.class);
+             startActivity(intent);
         });
     }
 

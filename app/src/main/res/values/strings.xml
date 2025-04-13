@@ -8,4 +8,35 @@
         <item>Español</item>
         <item>Portugués</item>
     </string-array>
+    <string name="welcomea">Bienvenido</string>
+    <string name="sign_up">Regístrate</string>
+    <string name="pet_care_made_easy">Cuidado de mascotas fácil</string>
+    <string name="log_in">Iniciar sesión</string>
+    <string name="or_sign_in_with">O inicia sesión con</string>
+    <string name="google">Google</string>
+    <!--  ActivityRegister  -->
+    <string name="sign_up_title">Registrarse</string>
+    <string name="hint_name">Nombre</string>
+    <string name="hint_email">Correo electrónico</string>
+    <string name="hint_password">Contraseña</string>
+    <string name="question_pet_types">¿Qué tipo de mascotas tienes?</string>
+    <string name="pet_dogs">Perros</string>
+    <string name="pet_cats">Gatos</string>
+    <string name="pet_exotics">Exóticos</string>
+    <string name="next">Siguiente</string>
+    <!--  PetRegisterActivity  -->
+    <string name="how_many_pets">¿Cuántas mascotas tienes?</string>
+    <string name="increase">Aumentar</string>
+    <string name="decrease">Disminuir</string>
+    <!--  item_pet_card.xml  -->
+    <string name="pet_index">Mascota</string>
+    <string name="hint_pet_name">Nombre</string>
+    <string name="hint_pet_breed">Raza</string>
+    <string name="hint_pet_birth">Fecha de nacimiento</string>
+    <string name="animal_dog">Perro</string>
+    <string name="animal_cat">Gato</string>
+    <string name="animal_exotic">Exótico</string>
+    <string name="pet_info_title">Información de %1$s</string>
+
+
 </resources>

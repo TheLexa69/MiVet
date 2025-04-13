@@ -11,6 +11,8 @@
 
     <color name="bg_principal">#EEFAF7</color>
     <color name="btn_principal">#5BA8A7</color>
+    <color name="clr_font">#175052</color>
+
 
     <color name="verde_calmante">#A8D5BA</color>
     <color name="azul_sereno">#A9D6E5</color>

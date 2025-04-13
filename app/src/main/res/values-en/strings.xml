@@ -9,4 +9,36 @@
         <item>Spanish</item>
         <item>Portuguese</item>
     </string-array>
+    <!-- AuthActivity -->
+    <string name="welcomea">Welcome</string>
+    <string name="sign_up">Sign Up</string>
+    <string name="pet_care_made_easy">Pet care made easy</string>
+    <string name="log_in">Log In</string>
+    <string name="or_sign_in_with">Or sign in with</string>
+    <string name="google">Google</string>
+    <!--  ActivityRegister  -->
+    <string name="sign_up_title">Sign Up</string>
+    <string name="hint_name">Name</string>
+    <string name="hint_email">Email</string>
+    <string name="hint_password">Password</string>
+    <string name="question_pet_types">What types of pets do you have?</string>
+    <string name="pet_dogs">Dogs</string>
+    <string name="pet_cats">Cats</string>
+    <string name="pet_exotics">Exotics</string>
+    <string name="next">Next</string>
+    <!--  PetRegisterActivity  -->
+    <string name="how_many_pets">How many pets do you have?</string>
+    <string name="increase">Increase</string>
+    <string name="decrease">Decrease</string>
+    <!--  item_pet_card.xml  -->
+    <string name="pet_index">Pet</string>
+    <string name="hint_pet_name">Name</string>
+    <string name="hint_pet_breed">Breed</string>
+    <string name="hint_pet_birth">Date of Birth</string>
+    <string name="animal_dog">Dog</string>
+    <string name="animal_cat">Cat</string>
+    <string name="animal_exotic">Exotic</string>
+    <string name="pet_info_title">Information about %1$s</string>
+
+
 </resources>

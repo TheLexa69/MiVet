@@ -9,4 +9,35 @@
         <item>Espanhol</item>
         <item>Português</item>
     </string-array>
+    <string name="welcomea">Bem-vindo</string>
+    <string name="sign_up">Inscrever-se</string>
+    <string name="pet_care_made_easy">Cuidado de animais de estimação fácil</string>
+    <string name="log_in">Entrar</string>
+    <string name="or_sign_in_with">Ou entre com</string>
+    <string name="google">Google</string>
+    <!--  ActivityRegister  -->
+    <string name="sign_up_title">Inscreva-se</string>
+    <string name="hint_name">Nome</string>
+    <string name="hint_email">Email</string>
+    <string name="hint_password">Senha</string>
+    <string name="question_pet_types">Quais tipos de animais de estimação você tem?</string>
+    <string name="pet_dogs">Cães</string>
+    <string name="pet_cats">Gatos</string>
+    <string name="pet_exotics">Exóticos</string>
+    <string name="next">Próximo</string>
+    <!--  PetRegisterActivity  -->
+    <string name="how_many_pets">Quantos animais de estimação você tem?</string>
+    <string name="increase">Aumentar</string>
+    <string name="decrease">Diminuir</string>
+    <!--  item_pet_card.xml  -->
+    <string name="pet_index">Animal</string>
+    <string name="hint_pet_name">Nome</string>
+    <string name="hint_pet_breed">Raça</string>
+    <string name="hint_pet_birth">Data de nascimento</string>
+    <string name="animal_dog">Cão</string>
+    <string name="animal_cat">Gato</string>
+    <string name="animal_exotic">Exótico</string>
+    <string name="pet_info_title">Informações sobre %1$s</string>
+
+
 </resources>
