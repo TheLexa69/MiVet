@@ -17,9 +17,11 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.security.crypto.EncryptedSharedPreferences;
 import androidx.security.crypto.MasterKey;
 
+import com.mivet.veterinaria.Usuario.UsuarioMenuActivity;
 import com.mivet.veterinaria.auth.AuthActivity;
 
 import java.util.Locale;
+import java.util.Map;
 
 public class MainActivity extends AppCompatActivity {
     private static final String TAG = "MainActivity";
@@ -34,7 +36,6 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        //Inicializacion de variables
         currentLanguage = Locale.getDefault().getLanguage();
         btnIniciar = findViewById(R.id.btnIniciar);
 
@@ -55,6 +56,22 @@ public class MainActivity extends AppCompatActivity {
             e.printStackTrace();
         }
 
+        logSharedPreferences();
+
+        // Verificar si existen las preferencias necesarias
+        if (sharedPreferences != null &&
+                sharedPreferences.contains("USER_ID") &&
+                sharedPreferences.contains("ROL") &&
+                sharedPreferences.contains("TOKEN")) {
+
+            Log.d(TAG, "Preferencias encontradas. Redirigiendo a UsuarioMenuActivity.");
+
+            Intent intent = new Intent(MainActivity.this, UsuarioMenuActivity.class);
+            startActivity(intent);
+            finish();
+            return;
+        }
+
         // Cargar el idioma guardado
         String savedLanguage = sharedPreferences.getString(LANG, "es");
         setLocale(savedLanguage);
@@ -66,7 +83,7 @@ public class MainActivity extends AppCompatActivity {
         languageSpinner.setAdapter(adapter);
 
         // Configurar el spinner para que seleccione el idioma correcto por defecto
-        Log.d("TAG", "Saved language: " + savedLanguage);
+        Log.d(TAG, "Idioma guardado: " + savedLanguage);
         if (savedLanguage.equals("en")) {
             languageSpinner.setSelection(0);
         } else if (savedLanguage.equals("es")) {
@@ -82,22 +99,20 @@ public class MainActivity extends AppCompatActivity {
                 switch (position) {
                     case 0:
                         selectedLang = "en";
-                        Log.d("TAG", "Selected language: English");
+                        Log.d(TAG, "Idioma seleccionado: Inglés");
                         break;
                     case 1:
                         selectedLang = "es";
-                        Log.d("TAG", "Selected language: Spanish");
+                        Log.d(TAG, "Idioma seleccionado: Español");
                         break;
                     case 2:
                         selectedLang = "pt";
-                        Log.d("TAG", "Selected language: Portuguese");
+                        Log.d(TAG, "Idioma seleccionado: Portugués");
                         break;
                 }
 
-                // Solo cambiar el idioma si es diferente al actual
                 if (!selectedLang.equals(currentLanguage)) {
                     currentLanguage = selectedLang;
-                    // Guardar el idioma en SharedPreferences
                     sharedPreferences.edit()
                             .putString(LANG, selectedLang)
                             .apply();
@@ -108,14 +123,13 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
-                Log.d(TAG, "Nothing selected on spinner");
+                Log.d(TAG, "Ningún idioma seleccionado en el spinner");
             }
         });
 
         btnIniciar.setOnClickListener(v -> {
-            // Aquí puedes iniciar la siguiente actividad
-             Intent intent = new Intent(MainActivity.this, AuthActivity.class);
-             startActivity(intent);
+            Intent intent = new Intent(MainActivity.this, AuthActivity.class);
+            startActivity(intent);
         });
     }
 
@@ -128,7 +142,16 @@ public class MainActivity extends AppCompatActivity {
         DisplayMetrics dm = resources.getDisplayMetrics();
         config.setLocale(locale);
         resources.updateConfiguration(config, dm);
-        // No necesitamos recreate() aquí, ya que solo aplicamos el idioma
-        // La actividad ya reflejará los cambios de idioma automáticamente
+    }
+
+    private void logSharedPreferences() {
+        if (sharedPreferences != null) {
+            Map<String, ?> allEntries = sharedPreferences.getAll();
+            for (Map.Entry<String, ?> entry : allEntries.entrySet()) {
+                Log.d(TAG, "Clave: " + entry.getKey() + ", Valor: " + entry.getValue());
+            }
+        } else {
+            Log.d(TAG, "SharedPreferences no está inicializado.");
+        }
     }
 }

@@ -1,21 +1,28 @@
 package com.mivet.veterinaria.auth;
 
 import android.app.DatePickerDialog;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
-import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.mivet.veterinaria.API.models.PetInfo;
+import com.mivet.veterinaria.API.dto.PetInfo;
+import com.mivet.veterinaria.API.models.Usuario;
 import com.mivet.veterinaria.R;
+import com.mivet.veterinaria.Usuario.UsuarioMenuActivity;
+import com.mivet.veterinaria.network.LoginConnectionClass;
+
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -24,6 +31,7 @@ import java.util.List;
 public class PetRegisterActivity extends AppCompatActivity {
 
     private List<String> animales;
+    private List<String> datosUsuario;
     private int animalIndex = 0;
 
     private LinearLayout petContainer;
@@ -40,6 +48,7 @@ public class PetRegisterActivity extends AppCompatActivity {
         setContentView(R.layout.activity_pet_register);
 
         animales = getIntent().getStringArrayListExtra("ANIMALES");
+        datosUsuario = getIntent().getStringArrayListExtra("DATOS_USUARIO");
 
         petContainer = findViewById(R.id.petContainer);
         btnPlus = findViewById(R.id.btnPlus);
@@ -183,12 +192,49 @@ public class PetRegisterActivity extends AppCompatActivity {
         if (animalIndex < animales.size()) {
             mostrarTipoActual();
         } else {
-            Log.d("Mascotas", "Registro completo:");
-            for (PetInfo pet : mascotasRegistradas) {
-                Log.d("Mascotas", pet.toString());
-            }
-            //CONTINUAR MAÑANA.
-            finish();
+            Usuario nuevoUsuario = new Usuario(
+                    datosUsuario.get(0),
+                    datosUsuario.get(1),
+                    datosUsuario.get(2),
+                    mascotasRegistradas
+            );
+
+            Log.d("Usuario", nuevoUsuario.toString());
+
+            // Llamar al endpoint en un hilo separado
+            new Thread(() -> {
+                JSONObject response = LoginConnectionClass.register(nuevoUsuario);
+                Log.d("Registro", "Respuesta del servidor: " + response.toString());
+
+                boolean success = response.optBoolean("success", false);
+                if (success) {
+                    // Obtener datos del token, user_id y rol
+                    String token = response.optString("token", "");
+                    int userId = response.optInt("user_id", -1);
+                    String rol = response.optString("rol", "");
+
+                    // Guardar token y user_id en SharedPreferences
+                    SharedPreferences prefs = getSharedPreferences("MiVetPrefs", MODE_PRIVATE);
+                    SharedPreferences.Editor editor = prefs.edit();
+                    editor.putString("token", token);
+                    editor.putInt("user_id", userId);
+                    editor.putString("rol", rol);
+                    editor.apply();
+
+                    // Redirigir al menú de usuario
+                    runOnUiThread(() -> {
+                        Intent intent = new Intent(PetRegisterActivity.this, UsuarioMenuActivity.class);
+                        startActivity(intent);
+                        finish();
+                    });
+                } else {
+                    String msg = response.optString("message", "Error en el registro");
+                    Log.e("Registro", "Falló: " + msg);
+                    runOnUiThread(() -> {
+                        Toast.makeText(this, "Registro fallido: " + msg, Toast.LENGTH_LONG).show();
+                    });
+                }
+            }).start();
         }
     }
 

@@ -6,6 +6,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.EditText;
 import android.widget.ImageView;
 
 import androidx.activity.EdgeToEdge;
@@ -26,7 +27,9 @@ public class RegisterActivity extends AppCompatActivity {
     private Button btnSiguiente;
 //    private List<Animal> animales = new ArrayList<>();
     private final List<String> ANIMALES = new ArrayList<>();
+    private final List<String> DATOS_USUARIO = new ArrayList<>();
     private ImageView imgPerro, imgGato, imgIguana;
+    private EditText etNombre, etCorreo, etContrasena;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,16 +46,33 @@ public class RegisterActivity extends AppCompatActivity {
         imgGato = findViewById(R.id.imgGato);
         imgPerro = findViewById(R.id.imgPerro);
         imgIguana = findViewById(R.id.imgIguana);
+        etNombre = findViewById(R.id.etNombre);
+        etCorreo = findViewById(R.id.etEmail);
+        etContrasena = findViewById(R.id.etContra);
+
+
+
 
         btnSiguiente = findViewById(R.id.btnSiguiente);
         btnSiguiente.setEnabled(false);
         btnSiguiente.setOnClickListener(v -> {
-            // Aquí puedes iniciar la siguiente actividad
+            String nombre = etNombre.getText().toString().trim();
+            String correo = etCorreo.getText().toString().trim();
+            String contrasena = etContrasena.getText().toString().trim();
+
+            // Añadir datos al array
+            DATOS_USUARIO.clear();
+            DATOS_USUARIO.add(nombre);
+            DATOS_USUARIO.add(correo);
+            DATOS_USUARIO.add(contrasena);
+
+            // Continuar al registro de mascotas
             Intent intent = new Intent(RegisterActivity.this, PetRegisterActivity.class);
-            // Pasar la lista de animales seleccionados a la siguiente actividad
             intent.putStringArrayListExtra("ANIMALES", (ArrayList<String>) ANIMALES);
+            intent.putStringArrayListExtra("DATOS_USUARIO", (ArrayList<String>) DATOS_USUARIO);
             startActivity(intent);
         });
+
     }
 
     // Boton para volver
