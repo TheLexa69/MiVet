@@ -56,22 +56,23 @@ public class RegisterActivity extends AppCompatActivity {
         btnSiguiente = findViewById(R.id.btnSiguiente);
         btnSiguiente.setEnabled(false);
         btnSiguiente.setOnClickListener(v -> {
-            String nombre = etNombre.getText().toString().trim();
-            String correo = etCorreo.getText().toString().trim();
-            String contrasena = etContrasena.getText().toString().trim();
+            if (validarDatosUsuario()) {
+                String nombre = etNombre.getText().toString().trim();
+                String correo = etCorreo.getText().toString().trim();
+                String contrasena = etContrasena.getText().toString().trim();
 
-            // Añadir datos al array
-            DATOS_USUARIO.clear();
-            DATOS_USUARIO.add(nombre);
-            DATOS_USUARIO.add(correo);
-            DATOS_USUARIO.add(contrasena);
+                DATOS_USUARIO.clear();
+                DATOS_USUARIO.add(nombre);
+                DATOS_USUARIO.add(correo);
+                DATOS_USUARIO.add(contrasena);
 
-            // Continuar al registro de mascotas
-            Intent intent = new Intent(RegisterActivity.this, PetRegisterActivity.class);
-            intent.putStringArrayListExtra("ANIMALES", (ArrayList<String>) ANIMALES);
-            intent.putStringArrayListExtra("DATOS_USUARIO", (ArrayList<String>) DATOS_USUARIO);
-            startActivity(intent);
+                Intent intent = new Intent(RegisterActivity.this, PetRegisterActivity.class);
+                intent.putStringArrayListExtra("ANIMALES", (ArrayList<String>) ANIMALES);
+                intent.putStringArrayListExtra("DATOS_USUARIO", (ArrayList<String>) DATOS_USUARIO);
+                startActivity(intent);
+            }
         });
+
 
     }
 
@@ -160,4 +161,26 @@ public class RegisterActivity extends AppCompatActivity {
             checkBox.setChecked(!checkBox.isChecked());
         }
     }
+
+    private boolean validarDatosUsuario() {
+        boolean esValido = true;
+
+        if (etNombre.getText().toString().trim().isEmpty()) {
+            etNombre.setError("Campo obligatorio");
+            esValido = false;
+        }
+
+        if (etCorreo.getText().toString().trim().isEmpty()) {
+            etCorreo.setError("Campo obligatorio");
+            esValido = false;
+        }
+
+        if (etContrasena.getText().toString().trim().isEmpty()) {
+            etContrasena.setError("Campo obligatorio");
+            esValido = false;
+        }
+
+        return esValido;
+    }
+
 }

@@ -146,12 +146,15 @@ public class MainActivity extends AppCompatActivity {
 
     private void logSharedPreferences() {
         if (sharedPreferences != null) {
+            Log.d(TAG, "🔐 Datos guardados en EncryptedSharedPreferences:");
             Map<String, ?> allEntries = sharedPreferences.getAll();
             for (Map.Entry<String, ?> entry : allEntries.entrySet()) {
                 Log.d(TAG, "Clave: " + entry.getKey() + ", Valor: " + entry.getValue());
             }
         } else {
-            Log.d(TAG, "SharedPreferences no está inicializado.");
+            Log.d(TAG, "❌ EncryptedSharedPreferences no está inicializado.");
         }
     }
+
+
 }

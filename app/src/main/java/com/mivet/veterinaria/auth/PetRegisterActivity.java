@@ -15,6 +15,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.security.crypto.EncryptedSharedPreferences;
+import androidx.security.crypto.MasterKey;
 
 import com.mivet.veterinaria.API.dto.PetInfo;
 import com.mivet.veterinaria.API.models.Usuario;
@@ -214,12 +216,29 @@ public class PetRegisterActivity extends AppCompatActivity {
                     String rol = response.optString("rol", "");
 
                     // Guardar token y user_id en SharedPreferences
-                    SharedPreferences prefs = getSharedPreferences("MiVetPrefs", MODE_PRIVATE);
-                    SharedPreferences.Editor editor = prefs.edit();
-                    editor.putString("token", token);
-                    editor.putInt("user_id", userId);
-                    editor.putString("rol", rol);
-                    editor.apply();
+                    try {
+                        MasterKey masterKey = new MasterKey.Builder(this)
+                                .setKeyScheme(MasterKey.KeyScheme.AES256_GCM)
+                                .build();
+
+                        SharedPreferences securePrefs = EncryptedSharedPreferences.create(
+                                this,
+                                "secure_prefs",
+                                masterKey,
+                                EncryptedSharedPreferences.PrefKeyEncryptionScheme.AES256_SIV,
+                                EncryptedSharedPreferences.PrefValueEncryptionScheme.AES256_GCM
+                        );
+
+                        SharedPreferences.Editor editor = securePrefs.edit();
+                        editor.putString("TOKEN", token);
+                        editor.putInt("USER_ID", userId);
+                        editor.putString("ROL", rol);
+                        editor.apply();
+
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+
 
                     // Redirigir al menú de usuario
                     runOnUiThread(() -> {
