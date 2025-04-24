@@ -9,7 +9,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.mivet.veterinaria.R;
 
 public class AuthActivity extends AppCompatActivity {
-    private Button btnRegister;
+    private Button btnRegister, btnLogin;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -24,11 +24,18 @@ public class AuthActivity extends AppCompatActivity {
 
         //Inicialización de variables.
         btnRegister = findViewById(R.id.btnRegister);
+        btnLogin = findViewById(R.id.btnLogin);
 
         // Configuración del botón de registro
         btnRegister.setOnClickListener(v -> {
             // Iniciar la actividad de registro
             Intent intent = new Intent(AuthActivity.this, RegisterActivity.class);
+            startActivity(intent);
+        });
+
+        btnLogin.setOnClickListener(v -> {;
+            // Iniciar la actividad de inicio de sesión
+            Intent intent = new Intent(AuthActivity.this, LoginActivity.class);
             startActivity(intent);
         });
 
