@@ -58,7 +58,14 @@ public class UsuarioMenuActivity extends AppCompatActivity {
         ImageView icon5 = card5.findViewById(R.id.imgCardIcon);
         TextView title5 = card5.findViewById(R.id.tvCardTitle);
         icon5.setImageResource(R.drawable.opcionajustes); // tu icono
-        title5.setText("Ajustes");
+        title5.setText("Adopción");
+
+        // Tarjeta 6
+        View card6 = findViewById(R.id.card6);
+        ImageView icon6 = card6.findViewById(R.id.imgCardIcon);
+        TextView title6 = card6.findViewById(R.id.tvCardTitle);
+        icon6.setImageResource(R.drawable.opcionajustes); // tu icono
+        title6.setText("Ajustes");
 
         // Tarjeta Logout
         View cardLogout = findViewById(R.id.cardLogout);
