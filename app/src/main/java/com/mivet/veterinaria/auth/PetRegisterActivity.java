@@ -22,6 +22,7 @@ import com.mivet.veterinaria.API.dto.PetInfo;
 import com.mivet.veterinaria.API.models.Usuario;
 import com.mivet.veterinaria.R;
 import com.mivet.veterinaria.Usuario.UsuarioMenuActivity;
+import com.mivet.veterinaria.helpers.UIHelper;
 import com.mivet.veterinaria.network.LoginConnectionClass;
 
 import org.json.JSONObject;
@@ -203,19 +204,13 @@ public class PetRegisterActivity extends AppCompatActivity {
 
             Log.d("Usuario", nuevoUsuario.toString());
 
-            // Llamar al endpoint en un hilo separado
             new Thread(() -> {
                 JSONObject response = LoginConnectionClass.register(nuevoUsuario);
                 Log.d("Registro", "Respuesta del servidor: " + response.toString());
 
                 boolean success = response.optBoolean("success", false);
                 if (success) {
-                    // Obtener datos del token, user_id y rol
-                    String token = response.optString("token", "");
-                    int userId = response.optInt("user_id", -1);
-                    String rol = response.optString("rol", "");
-
-                    // Guardar token y user_id en SharedPreferences
+                    // Guardar sesión
                     try {
                         MasterKey masterKey = new MasterKey.Builder(this)
                                 .setKeyScheme(MasterKey.KeyScheme.AES256_GCM)
@@ -230,17 +225,15 @@ public class PetRegisterActivity extends AppCompatActivity {
                         );
 
                         SharedPreferences.Editor editor = securePrefs.edit();
-                        editor.putString("TOKEN", token);
-                        editor.putInt("USER_ID", userId);
-                        editor.putString("ROL", rol);
+                        editor.putString("TOKEN", response.optString("token", ""));
+                        editor.putInt("USER_ID", response.optInt("user_id", -1));
+                        editor.putString("ROL", response.optString("rol", ""));
                         editor.apply();
 
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
 
-
-                    // Redirigir al menú de usuario
                     runOnUiThread(() -> {
                         Intent intent = new Intent(PetRegisterActivity.this, UsuarioMenuActivity.class);
                         startActivity(intent);
@@ -249,11 +242,18 @@ public class PetRegisterActivity extends AppCompatActivity {
                 } else {
                     String msg = response.optString("message", "Error en el registro");
                     Log.e("Registro", "Falló: " + msg);
+
                     runOnUiThread(() -> {
-                        Toast.makeText(this, "Registro fallido: " + msg, Toast.LENGTH_LONG).show();
+                        UIHelper.mostrarAlerta(
+                                PetRegisterActivity.this,
+                                "Registro fallido",
+                                msg,
+                                getResources().getColor(R.color.error_red)
+                        );
                     });
                 }
             }).start();
+
         }
     }
 

@@ -18,6 +18,7 @@ import androidx.core.view.WindowInsetsCompat;
 import com.mivet.veterinaria.API.models.Animal;
 import com.mivet.veterinaria.MainActivity;
 import com.mivet.veterinaria.R;
+import com.mivet.veterinaria.helpers.UIHelper;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -178,6 +179,15 @@ public class RegisterActivity extends AppCompatActivity {
         if (etContrasena.getText().toString().trim().isEmpty()) {
             etContrasena.setError("Campo obligatorio");
             esValido = false;
+        }
+
+        if (!esValido) {
+            UIHelper.mostrarAlerta(
+                    RegisterActivity.this,
+                    "Faltan datos",
+                    "Por favor, completa todos los campos obligatorios.",
+                    getResources().getColor(R.color.error_red)
+            );
         }
 
         return esValido;
