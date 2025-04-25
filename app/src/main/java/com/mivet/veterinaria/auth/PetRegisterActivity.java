@@ -12,7 +12,6 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.security.crypto.EncryptedSharedPreferences;
@@ -21,7 +20,7 @@ import androidx.security.crypto.MasterKey;
 import com.mivet.veterinaria.API.dto.PetInfo;
 import com.mivet.veterinaria.API.models.Usuario;
 import com.mivet.veterinaria.R;
-import com.mivet.veterinaria.Usuario.UsuarioMenuActivity;
+import com.mivet.veterinaria.usuario.UsuarioMenuActivity;
 import com.mivet.veterinaria.helpers.UIHelper;
 import com.mivet.veterinaria.network.LoginConnectionClass;
 
@@ -228,6 +227,7 @@ public class PetRegisterActivity extends AppCompatActivity {
                         editor.putString("TOKEN", response.optString("token", ""));
                         editor.putInt("USER_ID", response.optInt("user_id", -1));
                         editor.putString("ROL", response.optString("rol", ""));
+                        editor.putString("TIPO_USUARIO", response.optString("tipo_usuario", ""));
                         editor.apply();
 
                     } catch (Exception e) {

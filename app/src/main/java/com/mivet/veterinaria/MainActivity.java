@@ -17,7 +17,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.security.crypto.EncryptedSharedPreferences;
 import androidx.security.crypto.MasterKey;
 
-import com.mivet.veterinaria.Usuario.UsuarioMenuActivity;
+import com.mivet.veterinaria.usuario.UsuarioMenuActivity;
 import com.mivet.veterinaria.auth.AuthActivity;
 
 import java.util.Locale;

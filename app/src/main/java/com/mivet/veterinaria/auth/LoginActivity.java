@@ -6,8 +6,6 @@ import android.os.Bundle;
 import android.util.Log;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.Toast;
-
 
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -15,7 +13,7 @@ import androidx.security.crypto.EncryptedSharedPreferences;
 import androidx.security.crypto.MasterKey;
 
 import com.mivet.veterinaria.R;
-import com.mivet.veterinaria.Usuario.UsuarioMenuActivity;
+import com.mivet.veterinaria.usuario.UsuarioMenuActivity;
 import com.mivet.veterinaria.network.LoginConnectionClass;
 import com.mivet.veterinaria.helpers.UIHelper;
 
@@ -71,6 +69,7 @@ public class LoginActivity extends AppCompatActivity {
                 String token = response.optString("token", "");
                 int userId = response.optInt("user_id", -1);
                 String rol = response.optString("rol", "");
+                String tipoUsuario = response.optString("tipo_usuario", "");
 
                 try {
                     MasterKey masterKey = new MasterKey.Builder(this)
@@ -89,6 +88,7 @@ public class LoginActivity extends AppCompatActivity {
                     editor.putString("TOKEN", token);
                     editor.putInt("USER_ID", userId);
                     editor.putString("ROL", rol);
+                    editor.putString("TIPO_USUARIO", tipoUsuario);
                     editor.apply();
 
                     Log.d("Login", "Sesión guardada correctamente en EncryptedSharedPreferences");
