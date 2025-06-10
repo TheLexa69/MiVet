@@ -13,6 +13,7 @@ import androidx.security.crypto.EncryptedSharedPreferences;
 import androidx.security.crypto.MasterKey;
 
 import com.mivet.veterinaria.R;
+import com.mivet.veterinaria.protectora.ProtectoraMenuActivity;
 import com.mivet.veterinaria.usuario.UsuarioMenuActivity;
 import com.mivet.veterinaria.network.LoginConnectionClass;
 import com.mivet.veterinaria.helpers.UIHelper;
@@ -106,7 +107,15 @@ public class LoginActivity extends AppCompatActivity {
                 }
 
                 runOnUiThread(() -> {
-                    Intent intent = new Intent(LoginActivity.this, UsuarioMenuActivity.class);
+                    Intent intent;
+
+                    // Ensure case-insensitive comparison for "protectora"
+                    if ("protectora".equalsIgnoreCase(tipoUsuario.trim())) {
+                        intent = new Intent(LoginActivity.this, ProtectoraMenuActivity.class);
+                    } else {
+                        intent = new Intent(LoginActivity.this, UsuarioMenuActivity.class);
+                    }
+
                     startActivity(intent);
                     finish();
                 });

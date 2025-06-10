@@ -20,8 +20,7 @@
             android:id="@+id/imgCardIcon"
             android:layout_width="40dp"
             android:layout_height="40dp"
-            android:src="@drawable/perro"
-            app:tint="@color/btn_principal" />
+            android:src="@drawable/perro" />
 
         <TextView
             android:id="@+id/tvCardTitle"

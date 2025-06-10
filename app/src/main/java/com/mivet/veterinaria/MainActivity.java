@@ -17,9 +17,13 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.security.crypto.EncryptedSharedPreferences;
 import androidx.security.crypto.MasterKey;
 
+import com.mivet.veterinaria.auth.LoginActivity;
+import com.mivet.veterinaria.protectora.ProtectoraMenuActivity;
 import com.mivet.veterinaria.usuario.UsuarioMenuActivity;
 import com.mivet.veterinaria.auth.AuthActivity;
 
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.util.Locale;
 import java.util.Map;
 
@@ -57,19 +61,33 @@ public class MainActivity extends AppCompatActivity {
         }
 
         logSharedPreferences();
+        String tipoUsuario = sharedPreferences.getString("TIPO_USUARIO", "").trim();
 
         // Verificar si existen las preferencias necesarias
         if (sharedPreferences != null &&
                 sharedPreferences.contains("USER_ID") &&
                 sharedPreferences.contains("ROL") &&
-                sharedPreferences.contains("TOKEN")) {
+                sharedPreferences.contains("TOKEN") &&
+                sharedPreferences.contains("TIPO_USUARIO")
+        ) {
+            verificarToken();
 
             Log.d(TAG, "Preferencias encontradas. Redirigiendo a UsuarioMenuActivity.");
 
-            Intent intent = new Intent(MainActivity.this, UsuarioMenuActivity.class);
+            Intent intent;
+
+            // Ensure case-insensitive comparison for "protectora"
+            if ("protectora".equalsIgnoreCase(tipoUsuario.trim())) {
+                intent = new Intent(MainActivity.this, ProtectoraMenuActivity.class);
+            } else {
+                intent = new Intent(MainActivity.this, UsuarioMenuActivity.class);
+            }
+
             startActivity(intent);
             finish();
             return;
+        } else {
+            redirigirALogin();
         }
 
         // Cargar el idioma guardado
@@ -155,6 +173,43 @@ public class MainActivity extends AppCompatActivity {
             Log.d(TAG, "❌ EncryptedSharedPreferences no está inicializado.");
         }
     }
+
+    private void verificarToken() {
+        String token = sharedPreferences.getString("TOKEN", null);
+        if (token == null) {
+            redirigirALogin();
+            return;
+        }
+
+        new Thread(() -> {
+            try {
+                URL url = new URL("http://13.48.85.87:8080/api/mascotas");
+                HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+                conn.setRequestMethod("GET");
+                conn.setRequestProperty("Authorization", "Bearer " + token);
+                conn.connect();
+
+                int responseCode = conn.getResponseCode();
+                if (responseCode == 200) {
+                    Log.d("TokenCheck", "Token válido");
+                    // Continuar normalmente
+                } else {
+                    Log.d("TokenCheck", "Token inválido o expirado");
+                    runOnUiThread(this::redirigirALogin);
+                }
+            } catch (Exception e) {
+                Log.e("TokenCheck", "Error al verificar token", e);
+                runOnUiThread(this::redirigirALogin);
+            }
+        }).start();
+    }
+
+    private void redirigirALogin() {
+        Intent intent = new Intent(this, LoginActivity.class);
+        startActivity(intent);
+        finish();
+    }
+
 
 
 }
