@@ -17,13 +17,13 @@
         android:gravity="center_vertical">
 
         <ImageView
-            android:id="@+id/imgCardIcon"
+            android:id="@+id/imgAnimal"
             android:layout_width="40dp"
             android:layout_height="40dp"
             android:src="@drawable/perro" />
 
         <TextView
-            android:id="@+id/tvCardTitle"
+            android:id="@+id/tvNombreAnimal"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"

@@ -120,7 +120,7 @@ public class LoginConnectionClass {
                 m.put("nombre", mascota.getNombre());
                 m.put("tipo", mascota.getTipo().toLowerCase());
                 m.put("raza", mascota.getRaza());
-                m.put("fecha_nac", mascota.getFechaNacimiento());
+                m.put("fecha_nac", mascota.getFechaNac());
                 mascotasArray.put(m);
             }
 

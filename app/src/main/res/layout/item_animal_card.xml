@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/card_view"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="12dp"
+    android:background="@color/bg_principal"
+    app:cardCornerRadius="12dp"
+    app:cardElevation="6dp">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:id="@+id/animalCardConstraint"
+        android:layout_height="180dp"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:padding="16dp">
+
+        <ImageView
+            android:id="@+id/imgAnimal"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:src="@drawable/perro"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+
+        <TextView
+            android:id="@+id/tvNombreAnimal"
+            android:layout_width="wrap_content"
+            android:layout_height="24dp"
+            android:text="Título de la Sección"
+            android:textColor="@color/clr_font"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toTopOf="@+id/tvRazaAnimal"
+            app:layout_constraintEnd_toStartOf="@+id/imgIrInfoAnimal"
+            app:layout_constraintStart_toEndOf="@+id/imgAnimal"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/tvRazaAnimal"
+            android:layout_width="wrap_content"
+            android:layout_height="24dp"
+            android:layout_weight="1"
+            android:text="Título de la Sección"
+            android:textColor="@color/clr_font"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/imgIrInfoAnimal"
+            app:layout_constraintStart_toEndOf="@+id/imgAnimal"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/tvFechaNac"
+            android:layout_width="wrap_content"
+            android:layout_height="24dp"
+            android:layout_weight="1"
+            android:text="Título de la Sección"
+            android:textColor="@color/clr_font"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/imgIrInfoAnimal"
+            app:layout_constraintStart_toEndOf="@+id/imgAnimal"
+            app:layout_constraintTop_toBottomOf="@+id/tvRazaAnimal" />
+
+        <ImageView
+            android:id="@+id/imgIrInfoAnimal"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:src="@drawable/flechaderecha"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.cardview.widget.CardView>

@@ -16,6 +16,12 @@
         android:theme="@style/Theme.MiVet"
         tools:targetApi="31">
         <activity
+            android:name=".usuario.UsuarioMascotasActivity"
+            android:exported="false" />
+        <activity
+            android:name=".usuario.UsuarioPerfilActivity"
+            android:exported="false" />
+        <activity
             android:name=".protectora.ProtectoraMenuActivity"
             android:exported="false" />
         <activity

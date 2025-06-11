@@ -4,13 +4,13 @@ public class PetInfo {
     public String tipo;
     public String nombre;
     public String raza;
-    public String fechaNacimiento;
+    public String fechaNac;
 
     public PetInfo(String tipo, String nombre, String raza, String fechaNacimiento) {
         this.tipo = tipo;
         this.nombre = nombre;
         this.raza = raza;
-        this.fechaNacimiento = fechaNacimiento;
+        this.fechaNac = fechaNacimiento;
     }
 
     public String getTipo() {
@@ -37,16 +37,16 @@ public class PetInfo {
         this.raza = raza;
     }
 
-    public String getFechaNacimiento() {
-        return fechaNacimiento;
+    public String getFechaNac() {
+        return fechaNac;
     }
 
-    public void setFechaNacimiento(String fechaNacimiento) {
-        this.fechaNacimiento = fechaNacimiento;
+    public void setFechaNac(String fechaNac) {
+        this.fechaNac = fechaNac;
     }
 
     @Override
     public String toString() {
-        return tipo + " - " + nombre + " - " + raza + " - " + fechaNacimiento;
+        return tipo + " - " + nombre + " - " + raza + " - " + fechaNac;
     }
 }
