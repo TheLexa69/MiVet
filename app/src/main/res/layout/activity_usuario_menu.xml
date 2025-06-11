@@ -1,62 +1,97 @@
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.drawerlayout.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/scroll_view"
+    android:id="@+id/drawerLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/bg_principal"
-    android:padding="16dp"
-    >
+    android:fitsSystemWindows="true">
 
+    <!-- CONTENIDO PRINCIPAL -->
     <LinearLayout
-        android:id="@+id/card_container"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:orientation="vertical"
-        android:paddingTop="40dp">
+        android:fitsSystemWindows="true">
 
-        <androidx.constraintlayout.widget.ConstraintLayout
+        <!-- Toolbar -->
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:paddingBottom="16dp">
+            android:layout_height="?attr/actionBarSize"
+            android:background="?attr/colorPrimary"
+            app:title="MiVet"
+            app:titleTextColor="@android:color/white"
+            app:popupTheme="@style/ThemeOverlay.AppCompat.Light"/>
 
-            <TextView
-                android:id="@+id/tvWelcome"
-                android:layout_width="0dp"
+        <!-- Contenido principal con tarjetas -->
+        <ScrollView
+            android:id="@+id/scroll_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/bg_principal"
+            android:padding="16dp">
+
+            <LinearLayout
+                android:id="@+id/card_container"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="10dp"
-                android:ellipsize="end"
-                android:maxLines="2"
-                android:text="Bienvenido, Usuario"
-                android:textColor="@color/clr_font"
-                android:textSize="32sp"
-                android:textStyle="bold"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@+id/userImage"
-                app:layout_constraintHorizontal_bias="0"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                android:orientation="vertical"
+                android:paddingTop="40dp">
 
-            <ImageView
-                android:id="@+id/userImage"
-                android:layout_width="100dp"
-                android:layout_height="100dp"
-                android:src="@drawable/defaultimages"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintBottom_toBottomOf="parent" />
+                <!-- Bienvenida + imagen -->
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingBottom="16dp">
 
-        </androidx.constraintlayout.widget.ConstraintLayout>
+                    <TextView
+                        android:id="@+id/tvWelcome"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="10dp"
+                        android:ellipsize="end"
+                        android:maxLines="2"
+                        android:text="Bienvenido, Usuario"
+                        android:textColor="@color/clr_font"
+                        android:textSize="32sp"
+                        android:textStyle="bold"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toStartOf="@+id/userImage"
+                        app:layout_constraintHorizontal_bias="0"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
 
+                    <ImageView
+                        android:id="@+id/userImage"
+                        android:layout_width="100dp"
+                        android:layout_height="100dp"
+                        android:src="@drawable/defaultimages"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintBottom_toBottomOf="parent" />
 
-        <!-- Tarjetas individuales -->
-        <include android:id="@+id/card1" layout="@layout/item_user_card" />
-        <include android:id="@+id/card2" layout="@layout/item_user_card" />
-        <include android:id="@+id/card3" layout="@layout/item_user_card" />
-        <include android:id="@+id/card4" layout="@layout/item_user_card" />
-        <include android:id="@+id/card5" layout="@layout/item_user_card" />
-        <include android:id="@+id/card6" layout="@layout/item_user_card" />
-        <include android:id="@+id/cardLogout" layout="@layout/item_user_card" />
-        <!-- Agrega más tarjetas según sea necesario -->
+                </androidx.constraintlayout.widget.ConstraintLayout>
 
+                <!-- Tarjetas -->
+                <include android:id="@+id/card1" layout="@layout/item_user_card" />
+                <include android:id="@+id/card2" layout="@layout/item_user_card" />
+                <include android:id="@+id/card3" layout="@layout/item_user_card" />
+                <include android:id="@+id/card4" layout="@layout/item_user_card" />
+                <include android:id="@+id/card5" layout="@layout/item_user_card" />
+                <include android:id="@+id/card6" layout="@layout/item_user_card" />
+                <include android:id="@+id/cardLogout" layout="@layout/item_user_card" />
+
+            </LinearLayout>
+        </ScrollView>
     </LinearLayout>
-</ScrollView>
+
+    <!-- MENÚ LATERAL -->
+    <com.google.android.material.navigation.NavigationView
+        android:id="@+id/navigationView"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_gravity="start"
+        android:fitsSystemWindows="true"
+        app:headerLayout="@layout/nav_header"
+        app:menu="@menu/menu_usuario" />
+</androidx.drawerlayout.widget.DrawerLayout>

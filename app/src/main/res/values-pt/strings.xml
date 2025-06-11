@@ -38,6 +38,12 @@
     <string name="animal_cat">Gato</string>
     <string name="animal_exotic">Exótico</string>
     <string name="pet_info_title">Informações sobre %1$s</string>
+    <string name="open">Abrir menú</string>
+    <string name="close">Fecha menú</string>
+    <string name="menu_home">Inicio</string>
+    <string name="menu_gallery">Imagens</string>
+    <string name="menu_slideshow">Presentação</string>
+
 
 
 </resources>
