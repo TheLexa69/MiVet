@@ -1,6 +1,7 @@
 package com.mivet.veterinaria.API.dto;
 
 public class PetInfo {
+    public String id;
     public String tipo;
     public String nombre;
     public String raza;
@@ -11,6 +12,22 @@ public class PetInfo {
         this.nombre = nombre;
         this.raza = raza;
         this.fechaNac = fechaNacimiento;
+    }
+
+    public PetInfo(String id, String tipo, String nombre, String raza, String fechaNac) {
+        this.id = id;
+        this.tipo = tipo;
+        this.nombre = nombre;
+        this.raza = raza;
+        this.fechaNac = fechaNac;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 
     public String getTipo() {

@@ -8,8 +8,10 @@ import androidx.security.crypto.EncryptedSharedPreferences;
 import androidx.security.crypto.MasterKey;
 
 import com.mivet.veterinaria.API.dto.PetInfo;
+import com.mivet.veterinaria.API.models.Gasto;
+import com.mivet.veterinaria.API.models.Mensaje;
 import com.mivet.veterinaria.API.models.Usuario;
-import com.mivet.veterinaria.API.models.CambioContrasena;
+import com.mivet.veterinaria.API.dto.CambioContrasena;
 import com.mivet.veterinaria.API.retrofit.ApiClient;
 import com.mivet.veterinaria.API.retrofit.ApiService;
 
@@ -37,6 +39,14 @@ public class UsuarioRepository {
     // Callback específico para la lista de mascotas
     public interface MascotasCallback {
         void onSuccess(java.util.List<PetInfo> mascotas);
+        void onFailure(Throwable t);
+    }
+    public interface MensajesCallback {
+        void onSuccess(List<Mensaje> mensajes);
+        void onFailure(Throwable t);
+    }
+    public interface GastosCallback {
+        void onSuccess(List<Gasto> gastos);
         void onFailure(Throwable t);
     }
 
@@ -69,7 +79,7 @@ public class UsuarioRepository {
         }
     }
 
-    // Obtener perfil
+    //USUARIO
     public void getPerfil(UsuarioCallback callback) {
         String token = getToken();
         if (token == null) {
@@ -93,8 +103,101 @@ public class UsuarioRepository {
             }
         });
     }
+    public void actualizarPerfil(Usuario usuario, OperacionCallback callback) {
+        String token = getToken();
+        if (token == null) {
+            callback.onFailure(new Exception("Token no disponible"));
+            return;
+        }
 
-    // Obtener mascotas
+        apiService.updatePerfil(token, usuario).enqueue(new Callback<Void>() {
+            @Override
+            public void onResponse(Call<Void> call, Response<Void> response) {
+                if (response.isSuccessful()) {
+                    callback.onSuccess();
+                } else {
+                    callback.onFailure(new Exception("Error al actualizar perfil"));
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Void> call, Throwable t) {
+                callback.onFailure(t);
+            }
+        });
+    }
+    public void cambiarContrasena(CambioContrasena dto, OperacionCallback callback) {
+        String token = getToken();
+        if (token == null) {
+            callback.onFailure(new Exception("Token no disponible"));
+            return;
+        }
+
+        apiService.cambiarContrasena(token, dto).enqueue(new Callback<Void>() {
+            @Override
+            public void onResponse(Call<Void> call, Response<Void> response) {
+                if (response.isSuccessful()) {
+                    callback.onSuccess();
+                } else {
+                    callback.onFailure(new Exception("Error al cambiar contraseña"));
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Void> call, Throwable t) {
+                callback.onFailure(t);
+            }
+        });
+    }
+
+
+    //MASCOTAS
+    public void actualizarMascota(Long id, PetInfo mascota, OperacionCallback callback) {
+        String token = getToken();
+        if (token == null) {
+            callback.onFailure(new Exception("Token no disponible"));
+            return;
+        }
+
+        apiService.actualizarMascota(token, id, mascota).enqueue(new Callback<Void>() {
+            @Override
+            public void onResponse(Call<Void> call, Response<Void> response) {
+                if (response.isSuccessful()) {
+                    callback.onSuccess();
+                } else {
+                    callback.onFailure(new Exception("Error al actualizar mascota"));
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Void> call, Throwable t) {
+                callback.onFailure(t);
+            }
+        });
+    }
+    public void crearMascota(PetInfo mascota, OperacionCallback callback) {
+        String token = getToken();
+        if (token == null) {
+            callback.onFailure(new Exception("Token no disponible"));
+            return;
+        }
+
+        apiService.crearMascota(token, mascota).enqueue(new Callback<Void>() {
+            @Override
+            public void onResponse(Call<Void> call, Response<Void> response) {
+                if (response.isSuccessful()) {
+                    callback.onSuccess();
+                } else {
+                    callback.onFailure(new Exception("Error al crear mascota"));
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Void> call, Throwable t) {
+                callback.onFailure(t);
+            }
+        });
+    }
     public void getMascotas(MascotasCallback callback) {
         String token = getToken();
         if (token == null) {
@@ -119,21 +222,69 @@ public class UsuarioRepository {
         });
     }
 
-    // Actualizar perfil
-    public void actualizarPerfil(Usuario usuario, OperacionCallback callback) {
+    //GASTOS
+    public void filtrarGastos(String tipo, String dia, Integer mes, Integer anio, String desde, String hasta, GastosCallback callback) {
         String token = getToken();
         if (token == null) {
             callback.onFailure(new Exception("Token no disponible"));
             return;
         }
 
-        apiService.updatePerfil(token, usuario).enqueue(new Callback<Void>() {
+        apiService.filtrarGastos(token, tipo, dia, mes, anio, desde, hasta).enqueue(new Callback<List<Gasto>>() {
+            @Override
+            public void onResponse(Call<List<Gasto>> call, Response<List<Gasto>> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    callback.onSuccess(response.body());
+                } else {
+                    callback.onFailure(new Exception("Error al filtrar gastos"));
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<Gasto>> call, Throwable t) {
+                callback.onFailure(t);
+            }
+        });
+    }
+
+    //MENSAJES
+    public void getMensajes(MensajesCallback callback) {
+        String token = getToken();
+        if (token == null) {
+            callback.onFailure(new Exception("Token no disponible"));
+            return;
+        }
+
+        apiService.getMensajes(token).enqueue(new Callback<List<Mensaje>>() {
+            @Override
+            public void onResponse(Call<List<Mensaje>> call, Response<List<Mensaje>> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    callback.onSuccess(response.body());
+                } else {
+                    callback.onFailure(new Exception("Error al obtener mensajes"));
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<Mensaje>> call, Throwable t) {
+                callback.onFailure(t);
+            }
+        });
+    }
+    public void marcarMensajeLeido(Long id, OperacionCallback callback) {
+        String token = getToken();
+        if (token == null) {
+            callback.onFailure(new Exception("Token no disponible"));
+            return;
+        }
+
+        apiService.marcarMensajeLeido(token, id).enqueue(new Callback<Void>() {
             @Override
             public void onResponse(Call<Void> call, Response<Void> response) {
                 if (response.isSuccessful()) {
                     callback.onSuccess();
                 } else {
-                    callback.onFailure(new Exception("Error al actualizar perfil"));
+                    callback.onFailure(new Exception("Error al marcar como leído"));
                 }
             }
 
@@ -144,28 +295,5 @@ public class UsuarioRepository {
         });
     }
 
-    // Cambiar contraseña
-    public void cambiarContrasena(CambioContrasena dto, OperacionCallback callback) {
-        String token = getToken();
-        if (token == null) {
-            callback.onFailure(new Exception("Token no disponible"));
-            return;
-        }
 
-        apiService.cambiarContrasena(token, dto).enqueue(new Callback<Void>() {
-            @Override
-            public void onResponse(Call<Void> call, Response<Void> response) {
-                if (response.isSuccessful()) {
-                    callback.onSuccess();
-                } else {
-                    callback.onFailure(new Exception("Error al cambiar contraseña"));
-                }
-            }
-
-            @Override
-            public void onFailure(Call<Void> call, Throwable t) {
-                callback.onFailure(t);
-            }
-        });
-    }
 }

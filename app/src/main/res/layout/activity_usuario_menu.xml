@@ -79,7 +79,7 @@
                 <include android:id="@+id/card4" layout="@layout/item_user_card" />
                 <include android:id="@+id/card5" layout="@layout/item_user_card" />
                 <include android:id="@+id/card6" layout="@layout/item_user_card" />
-                <include android:id="@+id/cardLogout" layout="@layout/item_user_card" />
+<!--                <include android:id="@+id/cardLogout" layout="@layout/item_user_card" />-->
 
             </LinearLayout>
         </ScrollView>

@@ -1,5 +1,6 @@
 package com.mivet.veterinaria.API.retrofit;
 
+import com.mivet.veterinaria.API.dto.CambioContrasena;
 import com.mivet.veterinaria.API.dto.PetInfo;
 import com.mivet.veterinaria.API.models.*;
 
@@ -10,6 +11,9 @@ import retrofit2.http.*;
 
 public interface ApiService {
 
+    /*
+    * USUARIO
+    * */
     // PERFIL
     @GET("/api/usuario/perfil")
     Call<Usuario> getPerfil(@Header("Authorization") String token);
@@ -68,4 +72,23 @@ public interface ApiService {
 
     @PUT("/api/usuario/mensajes/{id}/leido")
     Call<Void> marcarMensajeLeido(@Header("Authorization") String token, @Path("id") Long id);
+
+
+
+    /*MASCOTAS*/
+    // Obtener todas las mascotas (accesible por usuarios con permisos)
+    @GET("/api/mascotas")
+    Call<List<PetInfo>> getTodasLasMascotas(@Header("Authorization") String token);
+
+    // Obtener mascota por ID
+    @GET("/api/mascotas/{id}")
+    Call<PetInfo> getMascotaPorId(@Header("Authorization") String token, @Path("id") Long id);
+
+    // Eliminar mascota por ID
+    @DELETE("/api/mascotas/mascotas/{id}")
+    Call<Void> eliminarMascota(@Header("Authorization") String token, @Path("id") Long id);
+
+
+
+
 }
