@@ -16,6 +16,9 @@
         android:theme="@style/Theme.MiVet"
         tools:targetApi="31">
         <activity
+            android:name=".usuario.UsuarioCitasActivity"
+            android:exported="false" />
+        <activity
             android:name=".mascota.InfoMascotaActivity"
             android:exported="false" />
         <activity

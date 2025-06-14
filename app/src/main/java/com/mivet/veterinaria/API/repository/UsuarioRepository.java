@@ -8,6 +8,7 @@ import androidx.security.crypto.EncryptedSharedPreferences;
 import androidx.security.crypto.MasterKey;
 
 import com.mivet.veterinaria.API.dto.PetInfo;
+import com.mivet.veterinaria.API.models.Cita;
 import com.mivet.veterinaria.API.models.Gasto;
 import com.mivet.veterinaria.API.models.Mensaje;
 import com.mivet.veterinaria.API.models.Usuario;
@@ -49,6 +50,11 @@ public class UsuarioRepository {
         void onSuccess(List<Gasto> gastos);
         void onFailure(Throwable t);
     }
+    public interface CitasCallback {
+        void onSuccess(List<Cita> citas);
+        void onFailure(Throwable t);
+    }
+
 
     public UsuarioRepository(Context context) {
         this.context = context;
@@ -221,6 +227,104 @@ public class UsuarioRepository {
             }
         });
     }
+
+    //CITAS
+    public void getCitas(CitasCallback callback) {
+        String token = getToken();
+        if (token == null) {
+            callback.onFailure(new Exception("Token no disponible"));
+            return;
+        }
+
+        apiService.getCitas(token).enqueue(new Callback<List<Cita>>() {
+            @Override
+            public void onResponse(Call<List<Cita>> call, Response<List<Cita>> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    callback.onSuccess(response.body());
+                } else {
+                    callback.onFailure(new Exception("Error al obtener citas"));
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<Cita>> call, Throwable t) {
+                callback.onFailure(t);
+            }
+        });
+    }
+
+    public void crearCita(Cita cita, OperacionCallback callback) {
+        String token = getToken();
+        if (token == null) {
+            callback.onFailure(new Exception("Token no disponible"));
+            return;
+        }
+
+        apiService.crearCita(token, cita).enqueue(new Callback<Void>() {
+            @Override
+            public void onResponse(Call<Void> call, Response<Void> response) {
+                if (response.isSuccessful()) {
+                    callback.onSuccess();
+                } else {
+                    callback.onFailure(new Exception("Error al crear la cita"));
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Void> call, Throwable t) {
+                callback.onFailure(t);
+            }
+        });
+    }
+
+    public void actualizarCita(Long id, Cita cita, OperacionCallback callback) {
+        String token = getToken();
+        if (token == null) {
+            callback.onFailure(new Exception("Token no disponible"));
+            return;
+        }
+
+        apiService.actualizarCita(token, id, cita).enqueue(new Callback<Void>() {
+            @Override
+            public void onResponse(Call<Void> call, Response<Void> response) {
+                if (response.isSuccessful()) {
+                    callback.onSuccess();
+                } else {
+                    callback.onFailure(new Exception("Error al actualizar la cita"));
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Void> call, Throwable t) {
+                callback.onFailure(t);
+            }
+        });
+    }
+
+    public void eliminarCita(Long id, OperacionCallback callback) {
+        String token = getToken();
+        if (token == null) {
+            callback.onFailure(new Exception("Token no disponible"));
+            return;
+        }
+
+        apiService.eliminarCita(token, id).enqueue(new Callback<Void>() {
+            @Override
+            public void onResponse(Call<Void> call, Response<Void> response) {
+                if (response.isSuccessful()) {
+                    callback.onSuccess();
+                } else {
+                    callback.onFailure(new Exception("Error al eliminar la cita"));
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Void> call, Throwable t) {
+                callback.onFailure(t);
+            }
+        });
+    }
+
 
     //GASTOS
     public void filtrarGastos(String tipo, String dia, Integer mes, Integer anio, String desde, String hasta, GastosCallback callback) {

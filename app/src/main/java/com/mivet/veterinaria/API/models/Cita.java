@@ -6,7 +6,7 @@ public class Cita {
     private Long id;
     private Long idMascota;
     private String tipo;
-    private Date fecha;
+    private String fecha;
     private String empresa;
 
     // Getters y Setters
@@ -19,8 +19,8 @@ public class Cita {
     public String getTipo() { return tipo; }
     public void setTipo(String tipo) { this.tipo = tipo; }
 
-    public Date getFecha() { return fecha; }
-    public void setFecha(Date fecha) { this.fecha = fecha; }
+    public String getFecha() { return fecha; }
+    public void setFecha(String fecha) { this.fecha = fecha; }
 
     public String getEmpresa() { return empresa; }
     public void setEmpresa(String empresa) { this.empresa = empresa; }

@@ -103,9 +103,9 @@ public class UsuarioMenuActivity extends AppCompatActivity {
         title2.setText("Mis mascotas");
 
         // Tarjeta 3
-        View card3 = findViewById(R.id.card3);
-        ImageView icon3 = card3.findViewById(R.id.imgAnimal);
-        TextView title3 = card3.findViewById(R.id.tvNombreAnimal);
+        View cardMisCitas = findViewById(R.id.card3);
+        ImageView icon3 = cardMisCitas.findViewById(R.id.imgAnimal);
+        TextView title3 = cardMisCitas.findViewById(R.id.tvNombreAnimal);
         icon3.setImageResource(R.drawable.opcioncitas);
         title3.setText("Citas");
 
@@ -140,6 +140,11 @@ public class UsuarioMenuActivity extends AppCompatActivity {
         //CARD DE MIS MASCOTAS
         cardMisMascotas.setOnClickListener(v -> {
             Intent intent = new Intent(UsuarioMenuActivity.this, UsuarioMascotasActivity.class);
+            startActivity(intent);
+        });
+
+        cardMisCitas.setOnClickListener(v -> {
+            Intent intent = new Intent(UsuarioMenuActivity.this, UsuarioCitasActivity.class);
             startActivity(intent);
         });
     }
