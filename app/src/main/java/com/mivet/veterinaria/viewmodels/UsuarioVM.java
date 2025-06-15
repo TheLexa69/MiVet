@@ -51,5 +51,19 @@ public class UsuarioVM extends ViewModel {
         });
     }
 
+    public void crearMascota(PetInfo mascota, UsuarioRepository.OperacionCallback callback) {
+        usuarioRepository.crearMascota(mascota, new UsuarioRepository.OperacionCallback() {
+            @Override
+            public void onSuccess() {
+                // Puedes notificar o refrescar aquí si hace falta
+                callback.onSuccess();
+            }
+
+            @Override
+            public void onFailure(Throwable t) {
+                callback.onFailure(t);
+            }
+        });
+    }
 
 }

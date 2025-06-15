@@ -6,12 +6,16 @@ public class PetInfo {
     public String nombre;
     public String raza;
     public String fechaNac;
+    public String descripcion;
 
     public PetInfo(String tipo, String nombre, String raza, String fechaNacimiento) {
         this.tipo = tipo;
         this.nombre = nombre;
         this.raza = raza;
         this.fechaNac = fechaNacimiento;
+    }
+
+    public PetInfo() {
     }
 
     public PetInfo(String id, String tipo, String nombre, String raza, String fechaNac) {
@@ -21,6 +25,7 @@ public class PetInfo {
         this.raza = raza;
         this.fechaNac = fechaNac;
     }
+
 
     public String getId() {
         return id;
@@ -60,6 +65,14 @@ public class PetInfo {
 
     public void setFechaNac(String fechaNac) {
         this.fechaNac = fechaNac;
+    }
+
+    public String getDescripcion() {
+        return descripcion;
+    }
+
+    public void setDescripcion(String descripcion) {
+        this.descripcion = descripcion;
     }
 
     @Override
