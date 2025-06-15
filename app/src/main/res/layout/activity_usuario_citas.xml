@@ -23,8 +23,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"
                 android:background="?attr/colorPrimary"
-                app:title="Citas"
+                app:title="Mis Citas"
                 app:titleTextColor="@android:color/white"
+                app:backgroundTint="@color/btn_principal"
                 app:popupTheme="@style/ThemeOverlay.AppCompat.Light"/>
         </com.google.android.material.appbar.AppBarLayout>
 
@@ -52,7 +53,9 @@
                 android:src="@drawable/masblanco"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                android:layout_margin="16dp"/>
+                android:layout_margin="16dp"
+                app:tint="@null"
+                app:backgroundTint="@color/btn_principal"/>
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 

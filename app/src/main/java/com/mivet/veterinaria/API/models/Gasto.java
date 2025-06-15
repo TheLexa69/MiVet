@@ -1,5 +1,6 @@
 package com.mivet.veterinaria.API.models;
 
+import java.time.LocalDate;
 import java.util.Date;
 
 public class Gasto {
@@ -7,8 +8,8 @@ public class Gasto {
     private Long idMascota;
     private String descripcion;
     private double cantidad;
-    private Date fecha;
-    private String tipo; // Por si lo usas en filtros
+    private String fecha;
+    private TipoGasto tipo;
 
     // Getters y Setters
     public Long getId() { return id; }
@@ -23,9 +24,9 @@ public class Gasto {
     public double getCantidad() { return cantidad; }
     public void setCantidad(double cantidad) { this.cantidad = cantidad; }
 
-    public Date getFecha() { return fecha; }
-    public void setFecha(Date fecha) { this.fecha = fecha; }
+    public String getFecha() { return fecha; }
+    public void setFecha(String fecha) { this.fecha = fecha; }
 
-    public String getTipo() { return tipo; }
-    public void setTipo(String tipo) { this.tipo = tipo; }
+    public TipoGasto getTipo() { return tipo; }
+    public void setTipo(TipoGasto tipo) { this.tipo = tipo; }
 }

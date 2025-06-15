@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:padding="16dp"
+    android:layout_height="wrap_content">
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView android:text="Tipo de Gasto" android:layout_height="wrap_content" android:layout_width="wrap_content"/>
+        <Spinner android:id="@+id/spinnerTipoFiltro" android:layout_width="match_parent" android:layout_height="wrap_content" />
+
+        <TextView android:text="Día exacto" android:layout_height="wrap_content" android:layout_width="wrap_content"/>
+        <EditText android:id="@+id/etDiaExacto" android:hint="dd/MM/yyyy" android:focusable="false" android:layout_width="match_parent" android:layout_height="wrap_content" />
+
+        <TextView android:text="Mes (1-12)"  android:layout_height="wrap_content" android:layout_width="wrap_content"/>
+        <EditText android:id="@+id/etMes" android:inputType="number" android:layout_width="match_parent" android:layout_height="wrap_content" />
+
+        <TextView android:text="Año" android:layout_height="wrap_content" android:layout_width="wrap_content"/>
+        <EditText android:id="@+id/etAnio" android:inputType="number" android:layout_width="match_parent" android:layout_height="wrap_content" />
+
+        <TextView android:text="Desde" android:layout_height="wrap_content" android:layout_width="wrap_content"/>
+        <EditText android:id="@+id/etDesde" android:hint="dd/MM/yyyy" android:focusable="false" android:layout_width="match_parent" android:layout_height="wrap_content" />
+
+        <TextView android:text="Hasta" android:layout_height="wrap_content" android:layout_width="wrap_content"/>
+        <EditText android:id="@+id/etHasta" android:hint="dd/MM/yyyy" android:focusable="false" android:layout_width="match_parent" android:layout_height="wrap_content" />
+    </LinearLayout>
+</ScrollView>
