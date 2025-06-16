@@ -11,12 +11,14 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.drawerlayout.widget.DrawerLayout;
@@ -28,6 +30,7 @@ import com.google.android.material.navigation.NavigationView;
 import com.mivet.veterinaria.API.dto.PetInfo;
 import com.mivet.veterinaria.API.models.Mensaje;
 import com.mivet.veterinaria.API.models.Usuario;
+import com.mivet.veterinaria.API.repository.MascotaRepository;
 import com.mivet.veterinaria.API.repository.UsuarioRepository;
 import com.mivet.veterinaria.R;
 import com.mivet.veterinaria.viewmodels.MascotaVM;
@@ -308,9 +311,51 @@ public class UsuarioMenuActivity extends AppCompatActivity {
             }
 
             holder.btnSolicitarAdopcion.setOnClickListener(v -> {
-                Toast.makeText(UsuarioMenuActivity.this, "Solicitud de adopción pendiente", Toast.LENGTH_SHORT).show();
-                // LOGICA DEL BOTON DE ADOPCIÓN, SE VA ABRIR UN MODEL PARA PONER EL TEXTO DE SOLICITUD
+                View dialogView = LayoutInflater.from(UsuarioMenuActivity.this)
+                        .inflate(R.layout.dialog_solicitud_adopcion, null);
+                EditText etMensaje = dialogView.findViewById(R.id.etMensajeAdopcion);
+
+                AlertDialog dialog = new AlertDialog.Builder(UsuarioMenuActivity.this)
+                        .setTitle("Solicitar adopción")
+                        .setView(dialogView)
+                        .setPositiveButton("Enviar", null)  // No pasar listener aún
+                        .setNegativeButton("Cancelar", null)
+                        .create();
+
+                dialog.setOnShowListener(dlg -> {
+                    Button btn = dialog.getButton(AlertDialog.BUTTON_POSITIVE);
+                    btn.setOnClickListener(view -> {
+                        String mensaje = etMensaje.getText().toString().trim();
+
+                        if (mensaje.isEmpty()) {
+                            etMensaje.setError("El mensaje no puede estar vacío");
+                            return;
+                        }
+
+                        MascotaRepository repo = new MascotaRepository(UsuarioMenuActivity.this);
+                        repo.solicitarAdopcion(Long.parseLong(mascota.getId()), mensaje, new MascotaRepository.OperacionCallback() {
+                            @Override
+                            public void onSuccess() {
+                                runOnUiThread(() -> {
+                                    Toast.makeText(UsuarioMenuActivity.this, "Solicitud enviada correctamente", Toast.LENGTH_SHORT).show();
+                                    dialog.dismiss();
+                                });
+                            }
+
+                            @Override
+                            public void onFailure(Throwable t) {
+                                runOnUiThread(() ->
+                                        Toast.makeText(UsuarioMenuActivity.this, t.getMessage(), Toast.LENGTH_LONG).show()
+                                );
+                            }
+                        });
+                    });
+                });
+
+                dialog.show();
             });
+
+
         }
 
         @Override

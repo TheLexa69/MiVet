@@ -91,5 +91,13 @@ public interface ApiService {
     @GET("/api/mascotas/adopcion")
     Call<List<PetInfo>> getMascotasAdopcion(@Header("Authorization") String token);
 
+    /*ADOPCIONES USUARIO*/
+    @POST("/api/adopciones/{idMascota}/solicitar")
+    Call<Void> solicitarAdopcion(
+            @Header("Authorization") String token,
+            @Path("idMascota") Long idMascota,
+            @Query("mensaje") String mensaje
+    );
+
 
 }

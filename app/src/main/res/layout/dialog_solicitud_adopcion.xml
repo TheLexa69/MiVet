@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<EditText
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/etMensajeAdopcion"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:hint="Escribe tu mensaje..."
+    android:inputType="textMultiLine"
+    android:minLines="3"
+    android:padding="12dp"
+    android:layout_margin="8dp"
+    card_view:cardCornerRadius="8dp"
+    card_view:cardElevation="4dp"
+    />

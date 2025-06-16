@@ -11,6 +11,7 @@ import com.mivet.veterinaria.API.dto.PetInfo;
 import com.mivet.veterinaria.API.retrofit.ApiClient;
 import com.mivet.veterinaria.API.retrofit.ApiService;
 
+import java.io.IOException;
 import java.util.List;
 
 import retrofit2.Call;
@@ -168,5 +169,39 @@ public class MascotaRepository {
             }
         });
     }
+
+    // Solicitar adopción de una mascota
+    public void solicitarAdopcion(Long idMascota, String mensaje, OperacionCallback callback) {
+        String token = getToken();
+        if (token == null) {
+            callback.onFailure(new Exception("Token no disponible"));
+            return;
+        }
+
+        apiService.solicitarAdopcion(token, idMascota, mensaje).enqueue(new Callback<Void>() {
+            @Override
+            public void onResponse(Call<Void> call, Response<Void> response) {
+                if (response.isSuccessful()) {
+                    callback.onSuccess();
+                } else {
+                    try {
+                        String errorMsg = response.errorBody() != null
+                                ? response.errorBody().string()
+                                : "Error desconocido";
+                        callback.onFailure(new Exception(errorMsg));
+                    } catch (IOException e) {
+                        callback.onFailure(new Exception("Error al leer respuesta del servidor"));
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Void> call, Throwable t) {
+                callback.onFailure(t);
+            }
+        });
+    }
+
+
 
 }
