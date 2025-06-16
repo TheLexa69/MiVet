@@ -5,7 +5,8 @@
     android:id="@+id/drawerLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:fitsSystemWindows="true">
+    android:fitsSystemWindows="true"
+    android:background="@color/bg_principal">
 
     <FrameLayout
         android:layout_width="match_parent"
@@ -27,7 +28,7 @@
                     android:id="@+id/toolbar"
                     android:layout_width="match_parent"
                     android:layout_height="?attr/actionBarSize"
-                    android:background="?attr/colorPrimary"
+                    android:background="@color/clr_font"
                     app:title="Mis Gastos"
                     app:titleTextColor="@android:color/white"
                     app:popupTheme="@style/ThemeOverlay.AppCompat.Light"/>
@@ -150,6 +151,7 @@
         android:layout_height="match_parent"
         android:layout_gravity="start"
         app:menu="@menu/menu_usuario"
+        android:background="@color/bg_principal"
         app:headerLayout="@layout/nav_header"
         android:fitsSystemWindows="true" />
 </androidx.drawerlayout.widget.DrawerLayout>

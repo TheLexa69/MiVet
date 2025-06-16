@@ -30,6 +30,7 @@ import com.google.android.material.navigation.NavigationView;
 import com.mivet.veterinaria.API.dto.PetInfo;
 import com.mivet.veterinaria.API.repository.UsuarioRepository;
 import com.mivet.veterinaria.R;
+import com.mivet.veterinaria.helpers.DrawerUtils;
 import com.mivet.veterinaria.mascota.InfoMascotaActivity;
 import com.mivet.veterinaria.viewmodels.UsuarioVM;
 import com.mivet.veterinaria.viewmodels.UsuarioVMFactory;
@@ -52,31 +53,13 @@ public class UsuarioMascotasActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_usuario_mascotas);
 
+        // 1. Toolbar
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        drawerLayout = findViewById(R.id.drawerLayout);
-        navigationView = findViewById(R.id.navigationView);
-
-        toggle = new ActionBarDrawerToggle(this, drawerLayout, toolbar, R.string.open, R.string.close);
-        drawerLayout.addDrawerListener(toggle);
-        toggle.syncState();
-
-        navigationView.setNavigationItemSelectedListener(item -> {
-            int id = item.getItemId();
-            drawerLayout.closeDrawers();
-
-            if (id == R.id.action_perfil) {
-                startActivity(new Intent(this, UsuarioPerfilActivity.class));
-            } else if (id == R.id.action_mascotas) {
-                // estamos aqui
-            } else if (id == R.id.action_configuracion) {
-                startActivity(new Intent(this, UsuarioMenuActivity.class));
-            } else if (id == R.id.action_cerrar_sesion) {
-                com.mivet.veterinaria.helpers.SesionUtils.cerrarSesion(this);
-            }
-            return true;
-        });
+        // 2. DrawerLayout y NavigationView
+        DrawerUtils.configurarDrawerUsuario(this, toolbar);
+        //FIN DEL TOOLBAR
 
         rv = findViewById(R.id.rvMascotas);
         rv.setLayoutManager(new LinearLayoutManager(this));

@@ -5,7 +5,8 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".auth.AuthActivity">
+    tools:context=".auth.AuthActivity"
+    android:background="@color/bg_principal">
 
         <ImageView
             android:id="@+id/imageView2"

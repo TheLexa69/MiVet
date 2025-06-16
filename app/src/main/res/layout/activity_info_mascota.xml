@@ -7,31 +7,35 @@
     android:fitsSystemWindows="true">
 
     <!-- Contenido principal con Toolbar y layout incluido -->
+
+    <!-- Menú lateral de navegación -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:background="@color/bg_principal">
 
         <!-- Toolbar superior -->
         <androidx.appcompat.widget.Toolbar
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
-            android:background="?attr/colorPrimary"
-            android:title="Información Mascota"
-            android:titleTextColor="@android:color/white" />
+            android:background="@color/clr_font"
+            app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
+            app:title="Información Mascota"
+            app:titleTextColor="@android:color/white" />
 
         <!-- Incluye tu layout original aquí -->
         <include layout="@layout/content_info_mascota" />
     </LinearLayout>
 
-    <!-- Menú lateral de navegación -->
     <com.google.android.material.navigation.NavigationView
         android:id="@+id/navigationView"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:layout_gravity="start"
         android:fitsSystemWindows="true"
+        android:background="@color/bg_principal"
         app:headerLayout="@layout/nav_header"
         app:menu="@menu/menu_usuario" />
 </androidx.drawerlayout.widget.DrawerLayout>

@@ -5,7 +5,8 @@
     android:id="@+id/drawerLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:fitsSystemWindows="true">
+    android:fitsSystemWindows="true"
+    android:background="@color/bg_principal">
 
     <!-- Contenido principal con FrameLayout para overlay del FAB -->
     <FrameLayout
@@ -23,7 +24,7 @@
                 android:id="@+id/toolbar"
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"
-                android:background="?attr/colorPrimary"
+                android:background="@color/clr_font"
                 app:title="Mis Mascotas"
                 app:titleTextColor="@android:color/white"
                 app:popupTheme="@style/ThemeOverlay.AppCompat.Light"/>
@@ -60,6 +61,7 @@
         android:layout_height="match_parent"
         android:layout_gravity="start"
         app:menu="@menu/menu_usuario"
+        android:background="@color/bg_principal"
         app:headerLayout="@layout/nav_header"
         android:fitsSystemWindows="true" />
 </androidx.drawerlayout.widget.DrawerLayout>

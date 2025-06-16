@@ -5,7 +5,8 @@
     android:id="@+id/drawerLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:fitsSystemWindows="true">
+    android:fitsSystemWindows="true"
+    android:background="@color/bg_principal">
 
     <!-- Contenido principal -->
     <androidx.coordinatorlayout.widget.CoordinatorLayout
@@ -22,10 +23,9 @@
                 android:id="@+id/toolbar"
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"
-                android:background="?attr/colorPrimary"
+                android:background="@color/clr_font"
                 app:title="Mis Citas"
                 app:titleTextColor="@android:color/white"
-                app:backgroundTint="@color/btn_principal"
                 app:popupTheme="@style/ThemeOverlay.AppCompat.Light"/>
         </com.google.android.material.appbar.AppBarLayout>
 
@@ -65,7 +65,8 @@
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:layout_gravity="start"
+        android:fitsSystemWindows="true"
+        android:background="@color/bg_principal"
         app:menu="@menu/menu_usuario"
-        app:headerLayout="@layout/nav_header"
-        android:fitsSystemWindows="true" />
+        app:headerLayout="@layout/nav_header"/>
 </androidx.drawerlayout.widget.DrawerLayout>

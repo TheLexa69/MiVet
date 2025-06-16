@@ -1,5 +1,7 @@
 package com.mivet.veterinaria.usuario;
 
+import static com.mivet.veterinaria.helpers.SesionUtils.cerrarSesion;
+
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -11,6 +13,7 @@ import android.widget.Toast;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.content.ContextCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 
 import com.google.android.material.navigation.NavigationView;
@@ -18,6 +21,7 @@ import com.mivet.veterinaria.API.models.Usuario;
 import com.mivet.veterinaria.API.repository.UsuarioRepository;
 import com.mivet.veterinaria.R;
 import com.mivet.veterinaria.dialogs.CambiarContrasenaDialog;
+import com.mivet.veterinaria.helpers.DrawerUtils;
 import com.mivet.veterinaria.helpers.SesionUtils;
 
 public class UsuarioPerfilActivity extends AppCompatActivity {
@@ -37,31 +41,13 @@ public class UsuarioPerfilActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_usuario_perfil);
 
-        // Toolbar + menú lateral
+        // 1. Toolbar
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        drawerLayout = findViewById(R.id.drawerLayout);
-        navigationView = findViewById(R.id.navigationView);
-
-        toggle = new ActionBarDrawerToggle(this, drawerLayout, toolbar, R.string.open, R.string.close);
-        drawerLayout.addDrawerListener(toggle);
-        toggle.syncState();
-
-        navigationView.setNavigationItemSelectedListener(item -> {
-            int id = item.getItemId();
-            drawerLayout.closeDrawers();
-            if (id == R.id.action_perfil) {
-                // ya estamos aquí
-            } else if (id == R.id.action_mascotas) {
-                startActivity(new Intent(this, UsuarioMascotasActivity.class));
-            } else if (id == R.id.action_configuracion) {
-                startActivity(new Intent(this, UsuarioMenuActivity.class));
-            } else if (id == R.id.action_cerrar_sesion) {
-                SesionUtils.cerrarSesion(this);
-            }
-            return true;
-        });
+        // 2. DrawerLayout y NavigationView
+        DrawerUtils.configurarDrawerUsuario(this, toolbar);
+        //FIN DEL TOOLBAR
 
         // Init views
         etNombre = findViewById(R.id.etNombre);

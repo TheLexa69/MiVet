@@ -34,6 +34,7 @@ import com.mivet.veterinaria.API.models.Gasto;
 import com.mivet.veterinaria.API.repository.UsuarioRepository;
 import com.mivet.veterinaria.R;
 import com.mivet.veterinaria.API.models.TipoGasto;
+import com.mivet.veterinaria.helpers.DrawerUtils;
 import com.mivet.veterinaria.viewmodels.UsuarioGastosVM;
 import com.mivet.veterinaria.viewmodels.UsuarioGastosVMFactory;
 import com.mivet.veterinaria.helpers.SesionUtils;
@@ -64,32 +65,13 @@ public class UsuarioGastosActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_usuario_gastos);
 
-        // Toolbar y Drawer
+        // 1. Toolbar
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        drawerLayout = findViewById(R.id.drawerLayout);
-        navigationView = findViewById(R.id.navigationView);
-
-        toggle = new ActionBarDrawerToggle(this, drawerLayout, toolbar, R.string.open, R.string.close);
-        drawerLayout.addDrawerListener(toggle);
-        toggle.syncState();
-
-        navigationView.setNavigationItemSelectedListener(item -> {
-            int id = item.getItemId();
-            drawerLayout.closeDrawers();
-
-            if (id == R.id.action_perfil) {
-                startActivity(new Intent(this, UsuarioPerfilActivity.class));
-            } else if (id == R.id.action_mascotas) {
-                startActivity(new Intent(this, UsuarioMascotasActivity.class));
-            } else if (id == R.id.action_configuracion) {
-                startActivity(new Intent(this, UsuarioMenuActivity.class));
-            } else if (id == R.id.action_cerrar_sesion) {
-                SesionUtils.cerrarSesion(this);
-            }
-            return true;
-        });
+        // 2. DrawerLayout y NavigationView
+        DrawerUtils.configurarDrawerUsuario(this, toolbar);
+        //FIN DEL TOOLBAR
 
         // Layout y filtros
         btnToggleFiltros = findViewById(R.id.btnToggleFiltros);

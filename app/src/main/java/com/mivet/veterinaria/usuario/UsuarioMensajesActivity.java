@@ -9,6 +9,7 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.core.content.ContextCompat;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -17,6 +18,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.mivet.veterinaria.API.models.Mensaje;
 import com.mivet.veterinaria.API.repository.UsuarioRepository;
 import com.mivet.veterinaria.R;
+import com.mivet.veterinaria.helpers.DrawerUtils;
 import com.mivet.veterinaria.helpers.FechaUtils;
 import com.mivet.veterinaria.viewmodels.MensajeVM;
 import com.mivet.veterinaria.viewmodels.MensajeVMFactory;
@@ -33,6 +35,14 @@ public class UsuarioMensajesActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_usuario_mensajes);
+
+        // 1. Toolbar
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+
+        // 2. DrawerLayout y NavigationView
+        DrawerUtils.configurarDrawerUsuario(this, toolbar);
+        //FIN DEL TOOLBAR
 
         // ViewModel con Factory
         MensajeVMFactory factory = new MensajeVMFactory(new UsuarioRepository(this));

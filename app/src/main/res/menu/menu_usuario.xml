@@ -2,15 +2,15 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
-        android:id="@+id/action_perfil"
-        android:title="Perfil"
+        android:id="@+id/action_mensajes"
+        android:title="Mensajes"
         android:icon="@drawable/defaultimages"
         android:showAsAction="ifRoom" />
 
     <item
-        android:id="@+id/action_mascotas"
-        android:title="Mis Mascotas"
-        android:icon="@drawable/opcionhuella"
+        android:id="@+id/action_perfil"
+        android:title="Perfil"
+        android:icon="@drawable/defaultimages"
         android:showAsAction="ifRoom" />
 
     <item

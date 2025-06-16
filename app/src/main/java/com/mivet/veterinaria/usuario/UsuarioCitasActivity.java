@@ -61,10 +61,13 @@ public class UsuarioCitasActivity extends AppCompatActivity {
         UsuarioCitasVMFactory factory = new UsuarioCitasVMFactory(this);
         UsuarioCitasVM citasVM = new ViewModelProvider(this, factory).get(UsuarioCitasVM.class);
 
-        //Toolbar
+        // 1. Toolbar
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+        // 2. DrawerLayout y NavigationView
         DrawerUtils.configurarDrawerUsuario(this, toolbar);
+        //FIN DEL TOOLBAR
 
         RecyclerView rv = findViewById(R.id.rvCitas);
         rv.setLayoutManager(new LinearLayoutManager(this));
@@ -94,35 +97,6 @@ public class UsuarioCitasActivity extends AppCompatActivity {
         });
 
     }
-
-    //CONFIGURACIÓN DEL MENU
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_usuario, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        int id = item.getItemId();
-
-        if (id == R.id.action_perfil) {
-            startActivity(new Intent(this, UsuarioPerfilActivity.class));
-            return true;
-        } else if (id == R.id.action_mascotas) {
-            startActivity(new Intent(this, UsuarioMascotasActivity.class));
-            return true;
-        } else if (id == R.id.action_configuracion) {
-            startActivity(new Intent(this, UsuarioMascotasActivity.class));
-            return true;
-        } else if (id == R.id.action_cerrar_sesion) {
-            cerrarSesion(this);
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
-    }
-    //FIN DE CONFIGURACIÓN DEL MENU
 
     private class CitasAdapter extends RecyclerView.Adapter<CitasAdapter.CitaViewHolder> {
 
