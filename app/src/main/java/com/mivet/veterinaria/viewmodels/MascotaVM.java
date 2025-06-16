@@ -9,9 +9,12 @@ import com.mivet.veterinaria.API.dto.PetInfo;
 import com.mivet.veterinaria.API.repository.MascotaRepository;
 import com.mivet.veterinaria.API.repository.UsuarioRepository;
 
+import java.util.List;
+
 public class MascotaVM extends ViewModel {
 
     public MutableLiveData<PetInfo> mascotaLD = new MutableLiveData<>();
+    public MutableLiveData<List<PetInfo>> mascotasAdopcionLD = new MutableLiveData<>();
     private final MascotaRepository mascotaRepository;
     private final UsuarioRepository usuarioRepository;
 
@@ -53,11 +56,22 @@ public class MascotaVM extends ViewModel {
         });
     }
 
-
-
-
     public void eliminarMascota(Long id, MascotaRepository.OperacionCallback callback) {
         mascotaRepository.eliminarMascota(id, callback);
+    }
+
+    public void cargarMascotasProtectoras() {
+        mascotaRepository.getTodasLasMascotasAdopcion(new MascotaRepository.MascotasCallback() {
+            @Override
+            public void onSuccess(List<PetInfo> mascotas) {
+                mascotasAdopcionLD.postValue(mascotas);
+            }
+
+            @Override
+            public void onFailure(Throwable t) {
+                mascotasAdopcionLD.postValue(null);
+            }
+        });
     }
 
 }

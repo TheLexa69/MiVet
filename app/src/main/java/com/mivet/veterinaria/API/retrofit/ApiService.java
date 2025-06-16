@@ -88,7 +88,8 @@ public interface ApiService {
     @DELETE("/api/mascotas/mascotas/{id}")
     Call<Void> eliminarMascota(@Header("Authorization") String token, @Path("id") Long id);
 
-
+    @GET("/api/mascotas/adopcion")
+    Call<List<PetInfo>> getMascotasAdopcion(@Header("Authorization") String token);
 
 
 }

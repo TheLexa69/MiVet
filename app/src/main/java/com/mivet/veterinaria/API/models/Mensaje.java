@@ -2,19 +2,57 @@ package com.mivet.veterinaria.API.models;
 
 public class Mensaje {
     private Long id;
-    private String contenido;
+    private Long idUsuario;
+    private String titulo;
+    private String cuerpo;
+    private String fechaEnvio;
     private boolean leido;
-    private String fecha;
 
-    public Long getId() { return id; }
-    public void setId(Long id) { this.id = id; }
+    public Long getId() {
+        return id;
+    }
 
-    public String getContenido() { return contenido; }
-    public void setContenido(String contenido) { this.contenido = contenido; }
+    public void setId(Long id) {
+        this.id = id;
+    }
 
-    public boolean isLeido() { return leido; }
-    public void setLeido(boolean leido) { this.leido = leido; }
+    public Long getIdUsuario() {
+        return idUsuario;
+    }
 
-    public String getFecha() { return fecha; }
-    public void setFecha(String fecha) { this.fecha = fecha; }
+    public void setIdUsuario(Long idUsuario) {
+        this.idUsuario = idUsuario;
+    }
+
+    public String getTitulo() {
+        return titulo;
+    }
+
+    public void setTitulo(String titulo) {
+        this.titulo = titulo;
+    }
+
+    public String getCuerpo() {
+        return cuerpo;
+    }
+
+    public void setCuerpo(String cuerpo) {
+        this.cuerpo = cuerpo;
+    }
+
+    public String getFechaEnvio() {
+        return fechaEnvio;
+    }
+
+    public void setFechaEnvio(String fechaEnvio) {
+        this.fechaEnvio = fechaEnvio;
+    }
+
+    public boolean isLeido() {
+        return leido;
+    }
+
+    public void setLeido(boolean leido) {
+        this.leido = leido;
+    }
 }

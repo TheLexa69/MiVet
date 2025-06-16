@@ -76,7 +76,6 @@ public class MainActivity extends AppCompatActivity {
 
             Intent intent;
 
-            // Ensure case-insensitive comparison for "protectora"
             if ("protectora".equalsIgnoreCase(tipoUsuario.trim())) {
                 intent = new Intent(MainActivity.this, ProtectoraMenuActivity.class);
             } else {
@@ -209,6 +208,14 @@ public class MainActivity extends AppCompatActivity {
         startActivity(intent);
         finish();
     }
+
+//    private void redirigirAMain() {
+//        Intent intent = new Intent(this, MainActivity.class);
+//        startActivity(intent);
+//        finish();
+//
+//    }
+//
 
 
 

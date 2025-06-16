@@ -143,4 +143,30 @@ public class MascotaRepository {
             }
         });
     }
+
+    // Obtener mascotas en adopción
+    public void getTodasLasMascotasAdopcion(MascotasCallback callback) {
+        String token = getToken();
+        if (token == null) {
+            callback.onFailure(new Exception("Token no disponible"));
+            return;
+        }
+
+        apiService.getMascotasAdopcion(token).enqueue(new Callback<List<PetInfo>>() {
+            @Override
+            public void onResponse(Call<List<PetInfo>> call, Response<List<PetInfo>> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    callback.onSuccess(response.body());
+                } else {
+                    callback.onFailure(new Exception("Error al obtener mascotas. Código: " + response.code()));
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<PetInfo>> call, Throwable t) {
+                callback.onFailure(t);
+            }
+        });
+    }
+
 }

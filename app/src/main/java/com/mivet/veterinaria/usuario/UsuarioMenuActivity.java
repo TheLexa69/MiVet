@@ -5,21 +5,35 @@ import static com.mivet.veterinaria.helpers.SesionUtils.cerrarSesion;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.navigation.NavigationView;
+import com.mivet.veterinaria.API.dto.PetInfo;
+import com.mivet.veterinaria.API.models.Mensaje;
 import com.mivet.veterinaria.API.models.Usuario;
 import com.mivet.veterinaria.API.repository.UsuarioRepository;
 import com.mivet.veterinaria.R;
+import com.mivet.veterinaria.viewmodels.MascotaVM;
+import com.mivet.veterinaria.viewmodels.MascotaVMFactory;
+
+import java.util.List;
 
 public class UsuarioMenuActivity extends AppCompatActivity {
 
@@ -28,10 +42,11 @@ public class UsuarioMenuActivity extends AppCompatActivity {
     public static String USERTYPE;
     public static String USERROLE;
     private UsuarioRepository usuarioRepository;
-    TextView tvWelcome;
-    DrawerLayout drawerLayout;
-    NavigationView navigationView;
-    ActionBarDrawerToggle toggle;
+    private ImageView userNotificationImage;
+    private TextView tvWelcome;
+    private DrawerLayout drawerLayout;
+    private NavigationView navigationView;
+    private ActionBarDrawerToggle toggle;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -71,10 +86,20 @@ public class UsuarioMenuActivity extends AppCompatActivity {
 
         usuarioRepository = new UsuarioRepository(this);
 
-
+        userNotificationImage = findViewById(R.id.userNotificationImage);
         tvWelcome = findViewById(R.id.tvWelcome);
 
+        //NOTIFICACIONES
+        userNotificationImage.setOnClickListener(v -> {
+            Intent intent = new Intent(UsuarioMenuActivity.this, UsuarioMensajesActivity.class);
+            startActivity(intent);
+        });
+
         getUserData();
+
+        cargarMensajes();
+
+
 
         // Tarjeta 1
         View cardPerfil = findViewById(R.id.card1);
@@ -142,6 +167,19 @@ public class UsuarioMenuActivity extends AppCompatActivity {
             Intent intent = new Intent(UsuarioMenuActivity.this, UsuarioGastosActivity.class);
             startActivity(intent);
         });
+
+        RecyclerView rvAdopcion = findViewById(R.id.rvAdopcion);
+        MascotasAdopcionAdapter adopcionAdapter = new MascotasAdopcionAdapter();
+        rvAdopcion.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
+        rvAdopcion.setAdapter(adopcionAdapter);
+
+        // observar el LiveData del VM
+        MascotaVMFactory factory = new MascotaVMFactory(this);
+        MascotaVM mascotaVM = new ViewModelProvider(this, factory).get(MascotaVM.class);
+        mascotaVM.mascotasAdopcionLD.observe(this, adopcionAdapter::setMascotas);
+        mascotaVM.cargarMascotasProtectoras();
+
+
     }
 
     //CONFIGURACIÓN DEL MENU
@@ -193,10 +231,109 @@ public class UsuarioMenuActivity extends AppCompatActivity {
         });
     }
 
+    private void cargarMensajes() {
+        usuarioRepository.getMensajes(new UsuarioRepository.MensajesCallback() {
+            @Override
+            public void onSuccess(List<Mensaje> mensajes) {
+                boolean hayNoLeidos = false;
+
+                for (Mensaje mensaje : mensajes) {
+                    Log.d("MENSAJE_USUARIO", "ID: " + mensaje.getId() +
+                            ", Usuario: " + mensaje.getIdUsuario() +
+                            ", Titulo: " + mensaje.getTitulo() +
+                            ", Leído: " + mensaje.isLeido() +
+                            ", Fecha: " + mensaje.getFechaEnvio() +
+                            ", Contenido: " + mensaje.getCuerpo());
+
+                    if (!mensaje.isLeido()) {
+                        hayNoLeidos = true;
+                    }
+                }
+
+                int icono = hayNoLeidos ? R.drawable.opcionnotificacionon : R.drawable.opcionnotificacion;
+                runOnUiThread(() -> userNotificationImage.setImageResource(icono));
+            }
+
+            @Override
+            public void onFailure(Throwable t) {
+                Log.e("MENSAJE_USUARIO", "Error al obtener mensajes", t);
+            }
+        });
+    }
+
+
+
     @Override
     protected void onResume() {
         super.onResume();
-        getUserData(); // Refresca los datos del usuario cada vez que se vuelve a esta pantalla
+        getUserData(); // Esto refresca los datos del usuario cada vez que se vuelve a esta pantalla
+        cargarMensajes(); // Esto refresca los mensajes cada vez que se vuelve a esta pantalla
+    }
+
+    private class MascotasAdopcionAdapter extends RecyclerView.Adapter<MascotasAdopcionAdapter.MascotaViewHolder> {
+        private List<PetInfo> mascotas;
+
+        public void setMascotas(List<PetInfo> mascotas) {
+            this.mascotas = mascotas;
+            notifyDataSetChanged();
+        }
+
+        @NonNull
+        @Override
+        public MascotaViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+            View view = LayoutInflater.from(parent.getContext())
+                    .inflate(R.layout.item_mascota_adopcion, parent, false);
+            return new MascotaViewHolder(view);
+        }
+
+        @Override
+        public void onBindViewHolder(@NonNull MascotaViewHolder holder, int position) {
+            PetInfo mascota = mascotas.get(position);
+            holder.tvNombre.setText(mascota.getNombre());
+            holder.tvRaza.setText(mascota.getRaza());
+            holder.tvTipo.setText(mascota.getTipo());
+            holder.tvFechaNac.setText(mascota.getFechaNac());
+            holder.tvDescripcion.setText(mascota.getDescripcion() != null ? mascota.getDescripcion() : "");
+
+            switch (mascota.getTipo()) {
+                case "gato":
+                    holder.imgAnimal.setImageResource(R.drawable.gatocolorido);
+                    break;
+                case "exotico":
+                    holder.imgAnimal.setImageResource(R.drawable.iguanacolorida);
+                    break;
+                default:
+                    holder.imgAnimal.setImageResource(R.drawable.perrocolorido);
+                    break;
+            }
+
+            holder.btnSolicitarAdopcion.setOnClickListener(v -> {
+                Toast.makeText(UsuarioMenuActivity.this, "Solicitud de adopción pendiente", Toast.LENGTH_SHORT).show();
+                // LOGICA DEL BOTON DE ADOPCIÓN, SE VA ABRIR UN MODEL PARA PONER EL TEXTO DE SOLICITUD
+            });
+        }
+
+        @Override
+        public int getItemCount() {
+            return mascotas != null ? mascotas.size() : 0;
+        }
+
+        class MascotaViewHolder extends RecyclerView.ViewHolder {
+            TextView tvNombre, tvRaza, tvTipo, tvFechaNac, tvDescripcion;
+            ImageView imgAnimal;
+            Button btnSolicitarAdopcion;
+
+            public MascotaViewHolder(@NonNull View itemView) {
+                super(itemView);
+                tvNombre = itemView.findViewById(R.id.tvNombre);
+                tvRaza = itemView.findViewById(R.id.tvRaza);
+                tvTipo = itemView.findViewById(R.id.tvTipo);
+                tvFechaNac = itemView.findViewById(R.id.tvFechaNac);
+                tvDescripcion = itemView.findViewById(R.id.tvDescripcion);
+                imgAnimal = itemView.findViewById(R.id.imgAnimal);
+                btnSolicitarAdopcion = itemView.findViewById(R.id.btnSolicitarAdopcion);
+            }
+        }
     }
 
 

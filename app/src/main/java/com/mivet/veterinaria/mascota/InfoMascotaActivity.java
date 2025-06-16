@@ -81,6 +81,9 @@ public class InfoMascotaActivity extends AppCompatActivity {
         // ViewModel
         vm = new ViewModelProvider(this, new MascotaVMFactory(this)).get(MascotaVM.class);
 
+        vm.cargarMascotasProtectoras();
+
+
         idMascota = getIntent().getLongExtra("ID_MASCOTA", -1);
         if (idMascota == -1) {
             finish();

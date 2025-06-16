@@ -21,7 +21,7 @@
             android:background="?attr/colorPrimary"
             app:title="MiVet"
             app:titleTextColor="@android:color/white"
-            app:popupTheme="@style/ThemeOverlay.AppCompat.Light"/>
+            app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
 
         <!-- Contenido principal con tarjetas -->
         <ScrollView
@@ -42,7 +42,8 @@
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:paddingBottom="16dp">
+                    android:paddingBottom="10dp"
+                    android:paddingTop="20dp">
 
                     <TextView
                         android:id="@+id/tvWelcome"
@@ -57,7 +58,6 @@
                         android:textStyle="bold"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toStartOf="@+id/userImage"
-                        app:layout_constraintHorizontal_bias="0"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
 
@@ -70,16 +70,42 @@
                         app:layout_constraintTop_toTopOf="parent"
                         app:layout_constraintBottom_toBottomOf="parent" />
 
+                    <ImageView
+                        android:id="@+id/userNotificationImage"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:src="@drawable/opcionnotificacion"
+                        app:layout_constraintEnd_toEndOf="@+id/userImage"
+                        app:layout_constraintTop_toTopOf="@+id/userImage" />
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
-                <!-- Tarjetas -->
+                <!-- Título Adopción -->
+                <TextView
+                    android:id="@+id/tvTituloAdopcion"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Mascotas en adopción"
+                    android:textSize="18sp"
+                    android:textStyle="bold"
+                    android:paddingTop="24dp"
+                    android:paddingBottom="8dp" />
+
+                <!-- Carrusel de adopción -->
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rvAdopcion"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="24dp"
+                    android:overScrollMode="never"
+                    android:nestedScrollingEnabled="false" />
+
+                <!-- Tarjetas de navegación -->
                 <include android:id="@+id/card1" layout="@layout/item_user_card" />
                 <include android:id="@+id/card2" layout="@layout/item_user_card" />
                 <include android:id="@+id/card3" layout="@layout/item_user_card" />
                 <include android:id="@+id/card4" layout="@layout/item_user_card" />
                 <include android:id="@+id/card5" layout="@layout/item_user_card" />
                 <include android:id="@+id/card6" layout="@layout/item_user_card" />
-<!--                <include android:id="@+id/cardLogout" layout="@layout/item_user_card" />-->
 
             </LinearLayout>
         </ScrollView>

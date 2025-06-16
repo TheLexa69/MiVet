@@ -16,6 +16,9 @@
         android:theme="@style/Theme.MiVet"
         tools:targetApi="31">
         <activity
+            android:name=".usuario.UsuarioMensajesActivity"
+            android:exported="false" />
+        <activity
             android:name=".usuario.UsuarioGastosActivity"
             android:exported="false" />
         <activity
