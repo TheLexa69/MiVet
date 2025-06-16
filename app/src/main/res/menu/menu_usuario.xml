@@ -4,13 +4,14 @@
     <item
         android:id="@+id/action_mensajes"
         android:title="Mensajes"
-        android:icon="@drawable/defaultimages"
-        android:showAsAction="ifRoom" />
+        android:icon="@drawable/opcioncomentario"
+        android:showAsAction="ifRoom"
+        />
 
     <item
         android:id="@+id/action_perfil"
         android:title="Perfil"
-        android:icon="@drawable/defaultimages"
+        android:icon="@drawable/opcionperfil"
         android:showAsAction="ifRoom" />
 
     <item
