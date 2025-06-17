@@ -100,4 +100,35 @@ public interface ApiService {
     );
 
 
+
+    /*PROTECTORAS*/
+    @PUT("/api/protectora/perfil")
+    Call<Void> actualizarPerfilProtectora(
+            @Header("Authorization") String token,
+            @Body Protectora dto
+    );
+
+    // Obtener perfil de protectora
+    @GET("/api/protectora/perfil")
+    Call<Protectora> getPerfilProtectora(@Header("Authorization") String token);
+
+    // Obtener mascotas de protectora
+    @GET("/api/protectora/mascotas")
+    Call<List<PetInfo>> getMascotasProtectora(@Header("Authorization") String token);
+
+    // Guardar nueva mascota
+    @POST("/api/protectora/mascotas")
+    Call<PetInfo> crearMascotaProtectora(@Header("Authorization") String token, @Body PetInfo mascotaDTO);
+
+    // Obtener solicitudes de adopción pendientes
+    @GET("/api/adopciones/pendientes")
+    Call<List<Adopcion>> getSolicitudesPendientes(@Header("Authorization") String token);
+
+    // Cambiar estado de solicitud
+    @PATCH("/api/adopciones/{id}/estado")
+    Call<Adopcion> actualizarEstadoAdopcion(
+            @Header("Authorization") String token,
+            @Path("id") Long id,
+            @Query("estado") String estado // debe ser "aceptada" o "rechazada"
+    );
 }

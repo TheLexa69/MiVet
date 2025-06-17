@@ -5,7 +5,7 @@
     android:id="@+id/etMensajeAdopcion"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:hint="Escribe tu mensaje..."
+    android:hint="Escribe tu mensaje y deja tus datos de contacto..."
     android:inputType="textMultiLine"
     android:minLines="3"
     android:padding="12dp"

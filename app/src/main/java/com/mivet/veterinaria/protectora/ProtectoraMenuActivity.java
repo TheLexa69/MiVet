@@ -8,11 +8,15 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.security.crypto.EncryptedSharedPreferences;
 import androidx.security.crypto.MasterKey;
 
 import com.mivet.veterinaria.MainActivity;
 import com.mivet.veterinaria.R;
+import com.mivet.veterinaria.helpers.SesionUtils;
+import com.mivet.veterinaria.viewmodels.ProtectoraVM;
+import com.mivet.veterinaria.viewmodels.ProtectoraVMFactory;
 
 public class ProtectoraMenuActivity extends AppCompatActivity {
 
@@ -20,6 +24,16 @@ public class ProtectoraMenuActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_protectora_menu);
+        TextView tvWelcome = findViewById(R.id.tvWelcome);
+
+        ProtectoraVMFactory factory = new ProtectoraVMFactory(this);
+        ProtectoraVM vm = new ViewModelProvider(this, factory).get(ProtectoraVM.class);
+
+        vm.protectoraLD.observe(this, dto -> {
+            tvWelcome.setText("Bienvenida, " + dto.getNombre());
+        });
+
+        vm.cargarPerfil();
 
         // Card 1 - Adopciones
         View cardAdopciones = findViewById(R.id.cardAdopciones);
@@ -51,26 +65,19 @@ public class ProtectoraMenuActivity extends AppCompatActivity {
 
         // Logout logic
         cardLogout.setOnClickListener(v -> {
-            try {
-                MasterKey masterKey = new MasterKey.Builder(this)
-                        .setKeyScheme(MasterKey.KeyScheme.AES256_GCM)
-                        .build();
+            SesionUtils.cerrarSesion(this);
+        });
 
-                SharedPreferences securePrefs = EncryptedSharedPreferences.create(
-                        this,
-                        "secure_prefs",
-                        masterKey,
-                        EncryptedSharedPreferences.PrefKeyEncryptionScheme.AES256_SIV,
-                        EncryptedSharedPreferences.PrefValueEncryptionScheme.AES256_GCM
-                );
+        cardAdopciones.setOnClickListener(v -> {
+            startActivity(new Intent(this, ProtectoraAdopcionesActivity.class));
+        });
 
-                securePrefs.edit().clear().apply();
+        cardAnimales.setOnClickListener(v -> {
+            startActivity(new Intent(this, ProtectoraMascotasActivity.class));
+        });
 
-                startActivity(new Intent(this, MainActivity.class));
-                finish();
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
+        cardPerfil.setOnClickListener(v -> {
+            startActivity(new Intent(this, ProtectoraPerfilActivity.class));
         });
     }
 }

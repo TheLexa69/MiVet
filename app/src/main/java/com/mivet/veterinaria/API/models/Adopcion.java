@@ -8,7 +8,10 @@ public class Adopcion {
     private Long idUsuario;
     private String mensaje;
     private String estado;
-    private LocalDateTime fechaSolicitud;
+    private String fechaSolicitud;
+
+    public Adopcion() {
+    }
 
     // Getters y Setters
     public Long getId() { return id; }
@@ -26,6 +29,11 @@ public class Adopcion {
     public String getEstado() { return estado; }
     public void setEstado(String estado) { this.estado = estado; }
 
-    public LocalDateTime getFechaSolicitud() { return fechaSolicitud; }
-    public void setFechaSolicitud(LocalDateTime fechaSolicitud) { this.fechaSolicitud = fechaSolicitud; }
+    public String getFechaSolicitud() {
+        return fechaSolicitud;
+    }
+
+    public void setFechaSolicitud(String fechaSolicitud) {
+        this.fechaSolicitud = fechaSolicitud;
+    }
 }
