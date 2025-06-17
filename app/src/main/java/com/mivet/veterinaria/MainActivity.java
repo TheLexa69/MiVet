@@ -86,7 +86,7 @@ public class MainActivity extends AppCompatActivity {
             finish();
             return;
         } else {
-            redirigirALogin();
+//            redirigirALogin();
         }
 
         // Cargar el idioma guardado
@@ -194,7 +194,7 @@ public class MainActivity extends AppCompatActivity {
                     // Continuar normalmente
                 } else {
                     Log.d("TokenCheck", "Token inválido o expirado");
-                    runOnUiThread(this::redirigirALogin);
+//                    runOnUiThread(this::redirigirALogin);
                 }
             } catch (Exception e) {
                 Log.e("TokenCheck", "Error al verificar token", e);
