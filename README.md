@@ -1,6 +1,6 @@
  
 # MiVet - Aplicación Android para Gestión Veterinaria
-
+[![Ask DeepWiki](https://deepwiki.com/badge.svg)](https://deepwiki.com/TheLexa69/MiVet)
 [![Android](https://img.shields.io/badge/platform-android-green)](https://developer.android.com)
 [![Version](https://img.shields.io/badge/version-1.0-blue)]()
 [![License](https://img.shields.io/badge/license-MIT-lightgrey)]()
