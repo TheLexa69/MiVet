@@ -271,113 +271,34 @@ public class UsuarioGastosActivity extends AppCompatActivity {
             }
         }
     }
+
     private void mostrarDialogoNuevoGasto() {
-        // Si ya hay un diálogo mostrándose, no hacer nada
         if (dialogoNuevoGastoActivo) return;
 
         dialogoNuevoGastoActivo = true;
 
-        UsuarioVMFactory factory = new UsuarioVMFactory(this);
-        UsuarioVM usuarioVM = new ViewModelProvider(this, factory).get(UsuarioVM.class);
+        UsuarioVM usuarioVM = new ViewModelProvider(this, new UsuarioVMFactory(this)).get(UsuarioVM.class);
 
-        usuarioVM.mascotasLD.observe(this, mascotas -> {
-            if (mascotas != null && !mascotas.isEmpty()) {
-                View dialogView = LayoutInflater.from(this).inflate(R.layout.dialog_nuevo_gasto, null);
+        androidx.lifecycle.Observer<List<PetInfo>> tempObserver = new androidx.lifecycle.Observer<>() {
+            @Override
+            public void onChanged(List<PetInfo> mascotas) {
+                usuarioVM.mascotasLD.removeObserver(this); // ← clave
 
-                EditText etDescripcion = dialogView.findViewById(R.id.etDescripcion);
-                EditText etCantidad = dialogView.findViewById(R.id.etCantidad);
-                EditText etFecha = dialogView.findViewById(R.id.etFecha);
-                Spinner spinnerTipo = dialogView.findViewById(R.id.spinnerTipo);
-                Spinner spinnerMascota = dialogView.findViewById(R.id.spinnerMascota);
-
-                ArrayAdapter<TipoGasto> tipoAdapter = new ArrayAdapter<>(this,
-                        android.R.layout.simple_spinner_dropdown_item,
-                        TipoGasto.values());
-                spinnerTipo.setAdapter(tipoAdapter);
-
-                Calendar calendar = Calendar.getInstance();
-                etFecha.setOnClickListener(v -> {
-                    new DatePickerDialog(this, (view, year, month, dayOfMonth) -> {
-                        calendar.set(year, month, dayOfMonth);
-                        etFecha.setText(String.format("%02d/%02d/%04d", dayOfMonth, month + 1, year));
-                    }, calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH)).show();
-                });
-
-                ArrayAdapter<String> mascotaAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item);
-                for (PetInfo m : mascotas) mascotaAdapter.add(m.getNombre());
-                spinnerMascota.setAdapter(mascotaAdapter);
-
-                AlertDialog dialog = new AlertDialog.Builder(this)
-                        .setTitle("Nuevo Gasto")
-                        .setView(dialogView)
-                        .setPositiveButton("Crear", (dialogInterface, which) -> {
-                            String descripcion = etDescripcion.getText().toString();
-                            String cantidadStr = etCantidad.getText().toString();
-                            String fechaStr = etFecha.getText().toString();
-                            TipoGasto tipo = (TipoGasto) spinnerTipo.getSelectedItem();
-                            int posMascota = spinnerMascota.getSelectedItemPosition();
-
-                            if (descripcion.isEmpty() || cantidadStr.isEmpty() || fechaStr.isEmpty() || posMascota < 0) {
-                                Toast.makeText(this, "Todos los campos son obligatorios", Toast.LENGTH_SHORT).show();
-                                return;
-                            }
-
-                            double cantidad;
-                            try {
-                                cantidad = Double.parseDouble(cantidadStr);
-                            } catch (NumberFormatException e) {
-                                Toast.makeText(this, "Cantidad inválida", Toast.LENGTH_SHORT).show();
-                                return;
-                            }
-
-                            String[] partes = fechaStr.split("/");
-                            String fechaISO = partes[2] + "-" + partes[1] + "-" + partes[0];
-                            PetInfo mascotaSeleccionada = mascotas.get(posMascota);
-
-                            Gasto nuevo = new Gasto();
-                            nuevo.setDescripcion(descripcion);
-                            nuevo.setCantidad(cantidad);
-                            nuevo.setFecha(fechaISO);
-                            nuevo.setTipo(tipo);
-                            nuevo.setIdMascota(Long.parseLong(mascotaSeleccionada.getId()));
-
-                            UsuarioRepository repo = new UsuarioRepository(this);
-                            repo.crearGasto(nuevo, new UsuarioRepository.OperacionCallback() {
-                                @Override
-                                public void onSuccess() {
-                                    runOnUiThread(() -> {
-                                        Toast.makeText(UsuarioGastosActivity.this, "Gasto creado", Toast.LENGTH_SHORT).show();
-                                        viewModel.cargarTodosLosGastos();
-                                    });
-                                }
-
-                                @Override
-                                public void onFailure(Throwable t) {
-                                    runOnUiThread(() -> Toast.makeText(UsuarioGastosActivity.this, "Error al crear gasto", Toast.LENGTH_SHORT).show());
-                                }
-                            });
-                        })
-                        .setNegativeButton("Cancelar", null)
-                        .create();
-
-                fabNuevoGasto.setEnabled(false);
-                fabNuevoGasto.setAlpha(0.5f);
-
-                dialog.setOnDismissListener(d -> {
+                if (mascotas == null || mascotas.isEmpty()) {
+                    Toast.makeText(UsuarioGastosActivity.this, "No tienes mascotas cargadas", Toast.LENGTH_LONG).show();
                     dialogoNuevoGastoActivo = false;
-                    fabNuevoGasto.setEnabled(true);
-                    fabNuevoGasto.setAlpha(1f); // vuelve a la opacidad normal
-                });
-                dialog.show();
+                    return;
+                }
 
-            } else {
-                Toast.makeText(this, "No tienes mascotas cargadas", Toast.LENGTH_LONG).show();
-                dialogoNuevoGastoActivo = false;
+                // Mostrar el diálogo como lo tenías
+                mostrarDialogoGastoConMascotas(mascotas);
             }
-        });
+        };
 
+        usuarioVM.mascotasLD.observe(this, tempObserver);
         usuarioVM.cargarMascotas();
     }
+
 
     private void setupFechaPicker(EditText editText) {
         Calendar calendar = Calendar.getInstance();
@@ -414,6 +335,97 @@ public class UsuarioGastosActivity extends AppCompatActivity {
     private abstract class SimpleTextWatcher implements android.text.TextWatcher {
         @Override public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
         @Override public void afterTextChanged(android.text.Editable s) {}
+    }
+
+    private void mostrarDialogoGastoConMascotas(List<PetInfo> mascotas) {
+        View dialogView = LayoutInflater.from(this).inflate(R.layout.dialog_nuevo_gasto, null);
+
+        EditText etDescripcion = dialogView.findViewById(R.id.etDescripcion);
+        EditText etCantidad = dialogView.findViewById(R.id.etCantidad);
+        EditText etFecha = dialogView.findViewById(R.id.etFecha);
+        Spinner spinnerTipo = dialogView.findViewById(R.id.spinnerTipo);
+        Spinner spinnerMascota = dialogView.findViewById(R.id.spinnerMascota);
+
+        ArrayAdapter<TipoGasto> tipoAdapter = new ArrayAdapter<>(this,
+                android.R.layout.simple_spinner_dropdown_item,
+                TipoGasto.values());
+        spinnerTipo.setAdapter(tipoAdapter);
+
+        Calendar calendar = Calendar.getInstance();
+        etFecha.setOnClickListener(v -> {
+            new DatePickerDialog(this, (view, year, month, dayOfMonth) -> {
+                calendar.set(year, month, dayOfMonth);
+                etFecha.setText(String.format("%02d/%02d/%04d", dayOfMonth, month + 1, year));
+            }, calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH)).show();
+        });
+
+        ArrayAdapter<String> mascotaAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item);
+        for (PetInfo m : mascotas) mascotaAdapter.add(m.getNombre());
+        spinnerMascota.setAdapter(mascotaAdapter);
+
+        AlertDialog dialog = new AlertDialog.Builder(this)
+                .setTitle("Nuevo Gasto")
+                .setView(dialogView)
+                .setPositiveButton("Crear", (dialogInterface, which) -> {
+                    String descripcion = etDescripcion.getText().toString();
+                    String cantidadStr = etCantidad.getText().toString();
+                    String fechaStr = etFecha.getText().toString();
+                    TipoGasto tipo = (TipoGasto) spinnerTipo.getSelectedItem();
+                    int posMascota = spinnerMascota.getSelectedItemPosition();
+
+                    if (descripcion.isEmpty() || cantidadStr.isEmpty() || fechaStr.isEmpty() || posMascota < 0) {
+                        Toast.makeText(this, "Todos los campos son obligatorios", Toast.LENGTH_SHORT).show();
+                        return;
+                    }
+
+                    double cantidad;
+                    try {
+                        cantidad = Double.parseDouble(cantidadStr);
+                    } catch (NumberFormatException e) {
+                        Toast.makeText(this, "Cantidad inválida", Toast.LENGTH_SHORT).show();
+                        return;
+                    }
+
+                    String[] partes = fechaStr.split("/");
+                    String fechaISO = partes[2] + "-" + partes[1] + "-" + partes[0];
+                    PetInfo mascotaSeleccionada = mascotas.get(posMascota);
+
+                    Gasto nuevo = new Gasto();
+                    nuevo.setDescripcion(descripcion);
+                    nuevo.setCantidad(cantidad);
+                    nuevo.setFecha(fechaISO);
+                    nuevo.setTipo(tipo);
+                    nuevo.setIdMascota(Long.parseLong(mascotaSeleccionada.getId()));
+
+                    UsuarioRepository repo = new UsuarioRepository(this);
+                    repo.crearGasto(nuevo, new UsuarioRepository.OperacionCallback() {
+                        @Override
+                        public void onSuccess() {
+                            runOnUiThread(() -> {
+                                Toast.makeText(UsuarioGastosActivity.this, "Gasto creado", Toast.LENGTH_SHORT).show();
+                                viewModel.cargarTodosLosGastos();
+                            });
+                        }
+
+                        @Override
+                        public void onFailure(Throwable t) {
+                            runOnUiThread(() -> Toast.makeText(UsuarioGastosActivity.this, "Error al crear gasto", Toast.LENGTH_SHORT).show());
+                        }
+                    });
+                })
+                .setNegativeButton("Cancelar", null)
+                .create();
+
+        fabNuevoGasto.setEnabled(false);
+        fabNuevoGasto.setAlpha(0.5f);
+
+        dialog.setOnDismissListener(d -> {
+            dialogoNuevoGastoActivo = false;
+            fabNuevoGasto.setEnabled(true);
+            fabNuevoGasto.setAlpha(1f);
+        });
+
+        dialog.show();
     }
 
 
