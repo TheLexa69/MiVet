@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -88,10 +89,12 @@ public class UsuarioMensajesActivity extends AppCompatActivity {
                 holder.tvTitulo.setTypeface(null, Typeface.BOLD);
                 holder.tvTitulo.setTextColor(ContextCompat.getColor(holder.itemView.getContext(), R.color.clr_font));
                 holder.itemView.setAlpha(1f);
+                holder.ivIcono.setImageResource(R.drawable.mensajecerrado);
             } else {
                 holder.tvTitulo.setTypeface(null, Typeface.NORMAL);
-                holder.tvTitulo.setTextColor(ContextCompat.getColor(holder.itemView.getContext(), android.R.color.darker_gray));
-                holder.itemView.setAlpha(0.5f);
+                holder.tvTitulo.setTextColor(ContextCompat.getColor(holder.itemView.getContext(), R.color.clr_font));
+                holder.itemView.setAlpha(0.75f);
+                holder.ivIcono.setImageResource(R.drawable.mensajeabierto);
             }
 
             holder.itemView.setOnClickListener(v -> {
@@ -115,11 +118,13 @@ public class UsuarioMensajesActivity extends AppCompatActivity {
 
         class MensajeViewHolder extends RecyclerView.ViewHolder {
             TextView tvTitulo, tvFecha;
+            ImageView ivIcono;
 
             public MensajeViewHolder(@NonNull View itemView) {
                 super(itemView);
                 tvTitulo = itemView.findViewById(R.id.tvTituloMensaje);
                 tvFecha = itemView.findViewById(R.id.tvFechaMensaje);
+                ivIcono = itemView.findViewById(R.id.ivIconoMensaje);
             }
         }
     }

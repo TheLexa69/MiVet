@@ -3,36 +3,51 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginVertical="6dp"
     android:layout_marginHorizontal="8dp"
-    app:cardElevation="4dp"
-    app:cardCornerRadius="12dp"
+    android:layout_marginVertical="6dp"
+    android:clickable="true"
     android:foreground="?attr/selectableItemBackground"
-    android:clickable="true">
+    app:cardCornerRadius="12dp"
+    app:cardElevation="4dp">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
+        android:orientation="horizontal"
         android:padding="16dp">
 
-        <TextView
-            android:id="@+id/tvTituloMensaje"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Título del mensaje"
-            android:textSize="16sp"
-            android:textStyle="bold"
-            android:textColor="@android:color/black" />
+        <ImageView
+            android:id="@+id/ivIconoMensaje"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_gravity="start"
+            android:contentDescription="Mensaje cerrado"
+            android:src="@drawable/mensajecerrado" />
 
-        <TextView
-            android:id="@+id/tvFechaMensaje"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="2025-06-16"
-            android:textSize="14sp"
-            android:textColor="@android:color/darker_gray"
-            android:layout_marginTop="4dp"/>
+            android:orientation="vertical"
+            android:paddingLeft="16dp">
+
+            <TextView
+                android:id="@+id/tvTituloMensaje"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Título del mensaje"
+                android:textColor="@android:color/black"
+                android:textSize="16sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/tvFechaMensaje"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:text="2025-06-16"
+                android:textColor="@android:color/darker_gray"
+                android:textSize="14sp" />
+        </LinearLayout>
     </LinearLayout>
 
 </androidx.cardview.widget.CardView>
