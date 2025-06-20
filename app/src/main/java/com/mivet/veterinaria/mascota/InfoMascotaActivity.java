@@ -45,6 +45,8 @@ public class InfoMascotaActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_info_mascota);
+        drawerLayout = findViewById(R.id.drawerLayout);
+
 
         // 1. Toolbar
         Toolbar toolbar = findViewById(R.id.toolbar);
@@ -76,6 +78,7 @@ public class InfoMascotaActivity extends AppCompatActivity {
 
         etFechaNac.setOnClickListener(v -> {
             if (!modoEdicion) return;
+
             final Calendar calendar = Calendar.getInstance();
             int year = calendar.get(Calendar.YEAR);
             int month = calendar.get(Calendar.MONTH);
@@ -83,11 +86,13 @@ public class InfoMascotaActivity extends AppCompatActivity {
 
             DatePickerDialog datePickerDialog = new DatePickerDialog(this,
                     (view, selectedYear, selectedMonth, selectedDay) -> {
-                        fechaSeleccionada = LocalDate.of(selectedYear, selectedMonth + 1, selectedDay);
-                        etFechaNac.setText(fechaSeleccionada.toString());
+                        // Formato compatible con todos los niveles de API
+                        String fechaTexto = String.format("%04d-%02d-%02d", selectedYear, selectedMonth + 1, selectedDay);
+                        etFechaNac.setText(fechaTexto);
                     }, year, month, day);
             datePickerDialog.show();
         });
+
 
         vm.mascotaLD.observe(this, mascota -> {
             if (mascota != null) {
@@ -179,11 +184,13 @@ public class InfoMascotaActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        if (drawerLayout.isDrawerOpen(GravityCompat.START))
+        if (drawerLayout != null && drawerLayout.isDrawerOpen(GravityCompat.START)) {
             drawerLayout.closeDrawer(GravityCompat.START);
-        else
+        } else {
             super.onBackPressed();
+        }
     }
+
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
