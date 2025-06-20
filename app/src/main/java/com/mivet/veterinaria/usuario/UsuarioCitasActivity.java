@@ -28,6 +28,7 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -51,6 +52,10 @@ import java.util.Date;
 import java.util.List;
 
 public class UsuarioCitasActivity extends AppCompatActivity {
+    UsuarioCitasVMFactory factory;
+    UsuarioCitasVM citasVM;
+    private List<PetInfo> mascotas;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,8 +63,8 @@ public class UsuarioCitasActivity extends AppCompatActivity {
         setContentView(R.layout.activity_usuario_citas);
 
 
-        UsuarioCitasVMFactory factory = new UsuarioCitasVMFactory(this);
-        UsuarioCitasVM citasVM = new ViewModelProvider(this, factory).get(UsuarioCitasVM.class);
+        factory = new UsuarioCitasVMFactory(this);
+        citasVM = new ViewModelProvider(this, factory).get(UsuarioCitasVM.class);
 
         // 1. Toolbar
         Toolbar toolbar = findViewById(R.id.toolbar);
@@ -82,17 +87,22 @@ public class UsuarioCitasActivity extends AppCompatActivity {
 
         FloatingActionButton fabAgregar = findViewById(R.id.fabNuevaCita);
         fabAgregar.setOnClickListener(v -> {
-            UsuarioVMFactory vmFactory = new UsuarioVMFactory(this);
-            UsuarioVM vm = new ViewModelProvider(this, vmFactory).get(UsuarioVM.class);
+            UsuarioVM vm = new ViewModelProvider(this,
+                    new UsuarioVMFactory(this)).get(UsuarioVM.class);
 
-            vm.mascotasLD.observe(this, mascotas -> {
-                if (mascotas != null && !mascotas.isEmpty()) {
-                    mostrarDialogoNuevaCitaConMascota(mascotas);
-                } else {
-                    UIHelper.mostrarAlerta(this, "Sin mascotas", "No puedes crear una cita sin mascotas", getColor(R.color.error_red));
+            Observer<List<PetInfo>> tempObserver = new Observer<>() {
+                @Override
+                public void onChanged(List<PetInfo> lista) {
+                    vm.mascotasLD.removeObserver(this); // ← clave
+                    if (lista != null && !lista.isEmpty()) {
+                        mostrarDialogoNuevaCitaConMascota(lista);
+                    } else {
+                        UIHelper.mostrarAlerta(UsuarioCitasActivity.this, "Sin mascotas", "No puedes crear una cita sin mascotas", getColor(R.color.error_red));
+                    }
                 }
-            });
+            };
 
+            vm.mascotasLD.observe(this, tempObserver);
             vm.cargarMascotas();
         });
 
@@ -297,7 +307,7 @@ public class UsuarioCitasActivity extends AppCompatActivity {
                         public void onSuccess() {
                             runOnUiThread(() -> {
                                 UIHelper.mostrarAlerta(UsuarioCitasActivity.this, "Éxito", "Cita creada correctamente", getColor(R.color.clr_font));
-                                recreate(); // recarga la activity
+                                citasVM.cargarCitas();
                             });
                         }
 
@@ -368,7 +378,7 @@ public class UsuarioCitasActivity extends AppCompatActivity {
                         public void onSuccess() {
                             runOnUiThread(() -> {
                                 UIHelper.mostrarAlerta(UsuarioCitasActivity.this, "Éxito", "Cita creada correctamente", getColor(R.color.clr_font));
-                                recreate(); // o citasVM.cargarCitas()
+                                citasVM.cargarCitas();
                             });
                         }
 
@@ -381,7 +391,6 @@ public class UsuarioCitasActivity extends AppCompatActivity {
                 .setNegativeButton("Cancelar", null)
                 .show();
     }
-
 
 
 }

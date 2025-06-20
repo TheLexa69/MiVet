@@ -20,15 +20,19 @@ import androidx.security.crypto.MasterKey;
 import com.mivet.veterinaria.API.dto.PetInfo;
 import com.mivet.veterinaria.API.models.Usuario;
 import com.mivet.veterinaria.R;
+import com.mivet.veterinaria.helpers.FechaUtils;
 import com.mivet.veterinaria.usuario.UsuarioMenuActivity;
 import com.mivet.veterinaria.helpers.UIHelper;
 import com.mivet.veterinaria.network.LoginConnectionClass;
 
 import org.json.JSONObject;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 public class PetRegisterActivity extends AppCompatActivity {
 
@@ -152,6 +156,7 @@ public class PetRegisterActivity extends AppCompatActivity {
             String name = etName.getText().toString().trim();
             String breed = etBreed.getText().toString().trim();
             String birth = etBirth.getText().toString().trim();
+            String formattedBirth = convertirFechaAFormatoISO(birth);
 
             if (name.isEmpty()) {
                 etName.setError("Obligatorio");
@@ -184,9 +189,15 @@ public class PetRegisterActivity extends AppCompatActivity {
             String breed = etBreed.getText().toString().trim();
             String birth = etBirth.getText().toString().trim();
 
-            mascotasRegistradas.add(new PetInfo(tipo, name, breed, birth));
+            // Convertir a formato ISO yyyy-MM-dd
+            String formattedBirth = convertirFechaAFormatoISO(birth);
+            Log.d("FECHA_FINAL", "Formatted birth: " + formattedBirth);
+
+            mascotasRegistradas.add(new PetInfo(tipo, name, breed, formattedBirth));
         }
     }
+
+
 
     private void avanzarOTerminar() {
         animalIndex++;
@@ -269,4 +280,18 @@ public class PetRegisterActivity extends AppCompatActivity {
                 return tipo;
         }
     }
+
+    private String convertirFechaAFormatoISO(String fechaOriginal) {
+        try {
+            SimpleDateFormat originalFormat = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
+            SimpleDateFormat targetFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
+            Date date = originalFormat.parse(fechaOriginal);
+            return targetFormat.format(date);
+        } catch (Exception e) {
+            Log.e("FECHA_PARSE", "Error al convertir fecha: " + fechaOriginal, e);
+            return "2000-01-01"; // fallback
+        }
+    }
+
+
 }

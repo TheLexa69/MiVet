@@ -36,6 +36,7 @@ import com.mivet.veterinaria.API.repository.MascotaRepository;
 import com.mivet.veterinaria.API.repository.UsuarioRepository;
 import com.mivet.veterinaria.R;
 import com.mivet.veterinaria.helpers.DrawerUtils;
+import com.mivet.veterinaria.helpers.SesionUtils;
 import com.mivet.veterinaria.viewmodels.MascotaVM;
 import com.mivet.veterinaria.viewmodels.MascotaVMFactory;
 
@@ -130,8 +131,14 @@ public class UsuarioMenuActivity extends AppCompatActivity {
         MascotaVMFactory factory = new MascotaVMFactory(this);
         MascotaVM mascotaVM = new ViewModelProvider(this, factory).get(MascotaVM.class);
         mascotaVM.mascotasAdopcionLD.observe(this, adopcionAdapter::setMascotas);
-        mascotaVM.cargarMascotasProtectoras();
 
+
+        String token = SesionUtils.obtenerToken(this);
+        if (token != null && !token.isEmpty()) {
+            mascotaVM.cargarMascotasProtectoras();
+        } else {
+            Log.e("UsuarioMenuActivity", "Token no disponible, no se cargan mascotas.");
+        }
 
     }
 
