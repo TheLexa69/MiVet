@@ -79,10 +79,10 @@ implementation 'com.squareup.retrofit2:converter-gson:2.9.0'
 
 ## Instalación y Configuración
 1. Clonar repositorio
-   \```bash
+```bash
    git clone https://github.com/TheLexa69/MiVet.git
    cd MiVet
-   \```
+```
 
 2. Configurar entorno en Android Studio
    1. Abrir proyecto en Android Studio
