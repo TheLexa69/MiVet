@@ -1,9 +1,12 @@
 package com.mivet.veterinaria;
 
+import android.Manifest;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.content.res.Resources;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
 import android.util.Log;
@@ -13,11 +16,15 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.Spinner;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.security.crypto.EncryptedSharedPreferences;
 import androidx.security.crypto.MasterKey;
 
 import com.mivet.veterinaria.auth.LoginActivity;
+import com.mivet.veterinaria.notificaciones.GestorNotificaciones;
 import com.mivet.veterinaria.protectora.ProtectoraMenuActivity;
 import com.mivet.veterinaria.usuario.UsuarioMenuActivity;
 import com.mivet.veterinaria.auth.AuthActivity;
@@ -30,6 +37,7 @@ import java.util.Map;
 public class MainActivity extends AppCompatActivity {
     private static final String TAG = "MainActivity";
     public static final String LANG = "LANG";
+    private static final int REQ_NOTIFICACIONES = 1001;
 
     private SharedPreferences sharedPreferences;
     private String currentLanguage;
@@ -42,6 +50,21 @@ public class MainActivity extends AppCompatActivity {
 
         currentLanguage = Locale.getDefault().getLanguage();
         btnIniciar = findViewById(R.id.btnIniciar);
+
+        GestorNotificaciones.crearCanal(getApplicationContext());
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            if (ContextCompat.checkSelfPermission(
+                    this, Manifest.permission.POST_NOTIFICATIONS)
+                    != PackageManager.PERMISSION_GRANTED) {
+
+                ActivityCompat.requestPermissions(
+                        this,
+                        new String[]{Manifest.permission.POST_NOTIFICATIONS},
+                        REQ_NOTIFICACIONES
+                );
+            }
+        }
+
 
         // Configuración de EncryptedSharedPreferences
         try {
@@ -217,6 +240,14 @@ public class MainActivity extends AppCompatActivity {
 //    }
 //
 
-
+    @Override
+    public void onRequestPermissionsResult(int requestCode,
+                                           @NonNull String[] permissions,
+                                           @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (requestCode == REQ_NOTIFICACIONES) {
+            // Aquí podrías informar al usuario si rechaza, pero no es obligatorio
+        }
+    }
 
 }

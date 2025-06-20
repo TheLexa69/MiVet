@@ -42,6 +42,7 @@ import com.mivet.veterinaria.R;
 import com.mivet.veterinaria.helpers.DrawerUtils;
 import com.mivet.veterinaria.helpers.FechaUtils;
 import com.mivet.veterinaria.helpers.UIHelper;
+import com.mivet.veterinaria.notificaciones.ProgramadorRecordatorios;
 import com.mivet.veterinaria.viewmodels.UsuarioCitasVM;
 import com.mivet.veterinaria.viewmodels.UsuarioCitasVMFactory;
 import com.mivet.veterinaria.viewmodels.UsuarioVM;
@@ -192,6 +193,8 @@ public class UsuarioCitasActivity extends AppCompatActivity {
                                 public void onSuccess() {
                                     runOnUiThread(() -> {
                                         notifyItemChanged(holder.getAdapterPosition());
+                                        ProgramadorRecordatorios.cancelar(getApplicationContext(), cita); // cita previa (mismo objeto)
+                                        ProgramadorRecordatorios.programar(getApplicationContext(), cita); // con la fecha nueva
                                         UIHelper.mostrarAlerta(UsuarioCitasActivity.this, "Éxito", "Cita actualizada correctamente", getColor(R.color.clr_font));
                                     });
                                 }
@@ -219,6 +222,7 @@ public class UsuarioCitasActivity extends AppCompatActivity {
                                     runOnUiThread(() -> {
                                         citas.remove(holder.getAdapterPosition());
                                         notifyItemRemoved(holder.getAdapterPosition());
+                                        ProgramadorRecordatorios.cancelar(getApplicationContext(), cita);
                                         UIHelper.mostrarAlerta(UsuarioCitasActivity.this, "Éxito", "Cita eliminada correctamente", getColor(R.color.clr_font));
                                     });
                                 }
@@ -257,69 +261,6 @@ public class UsuarioCitasActivity extends AppCompatActivity {
         }
     }
 
-    private void mostrarDialogoNuevaCita() {
-        View dialogView = LayoutInflater.from(this).inflate(R.layout.dialog_editar_cita, null);
-        EditText etEmpresa = dialogView.findViewById(R.id.etEmpresa);
-        EditText etFecha = dialogView.findViewById(R.id.etFecha);
-        Spinner spinnerTipo = dialogView.findViewById(R.id.spinnerTipo);
-
-        // Spinner
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(
-                this,
-                android.R.layout.simple_spinner_dropdown_item,
-                new String[]{"veterinaria", "peluqueria", "vacunacion"}
-        );
-        spinnerTipo.setAdapter(adapter);
-
-        // Fecha
-        Calendar calendar = Calendar.getInstance();
-        etFecha.setOnClickListener(v -> {
-            new DatePickerDialog(this, (view, year, month, day) -> {
-                new TimePickerDialog(this, (view1, hour, minute) -> {
-                    calendar.set(year, month, day, hour, minute);
-                    etFecha.setText(FechaUtils.convertirAFormatoLeible(String.valueOf(calendar.getTime())));
-                }, calendar.get(Calendar.HOUR_OF_DAY), calendar.get(Calendar.MINUTE), true).show();
-            }, calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH)).show();
-        });
-
-        new AlertDialog.Builder(this)
-                .setTitle("Nueva Cita")
-                .setView(dialogView)
-                .setPositiveButton("Crear", (dialog, which) -> {
-                    String empresa = etEmpresa.getText().toString();
-                    String tipo = spinnerTipo.getSelectedItem().toString();
-                    Date fechaDate = FechaUtils.parsearDesdeLegible(etFecha.getText().toString());
-
-                    if (empresa.isEmpty() || fechaDate == null) {
-                        UIHelper.mostrarAlerta(this, "Error", "Todos los campos son obligatorios", getColor(R.color.error_red));
-                        return;
-                    }
-
-                    Cita nueva = new Cita();
-                    nueva.setEmpresa(empresa);
-                    nueva.setTipo(tipo);
-                    nueva.setFecha(FechaUtils.convertirAFormatoISO(fechaDate));
-                    nueva.setIdMascota(null); // Si se requiere, puedes agregar selección de mascota
-
-                    UsuarioRepository repo = new UsuarioRepository(this);
-                    repo.crearCita(nueva, new UsuarioRepository.OperacionCallback() {
-                        @Override
-                        public void onSuccess() {
-                            runOnUiThread(() -> {
-                                UIHelper.mostrarAlerta(UsuarioCitasActivity.this, "Éxito", "Cita creada correctamente", getColor(R.color.clr_font));
-                                citasVM.cargarCitas();
-                            });
-                        }
-
-                        @Override
-                        public void onFailure(Throwable t) {
-                            runOnUiThread(() -> UIHelper.mostrarAlerta(UsuarioCitasActivity.this, "Error", "No se pudo crear la cita", getColor(R.color.error_red)));
-                        }
-                    });
-                })
-                .setNegativeButton("Cancelar", null)
-                .show();
-    }
 
     private void mostrarDialogoNuevaCitaConMascota(List<PetInfo> mascotas) {
         View dialogView = LayoutInflater.from(this).inflate(R.layout.dialog_nueva_cita, null);
@@ -378,6 +319,7 @@ public class UsuarioCitasActivity extends AppCompatActivity {
                         public void onSuccess() {
                             runOnUiThread(() -> {
                                 UIHelper.mostrarAlerta(UsuarioCitasActivity.this, "Éxito", "Cita creada correctamente", getColor(R.color.clr_font));
+                                ProgramadorRecordatorios.programar(getApplicationContext(), cita);
                                 citasVM.cargarCitas();
                             });
                         }
