@@ -94,7 +94,9 @@
             android:layout_height="60dp"
             android:text="@string/google"
             android:textStyle="bold"
+
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
+            android:backgroundTint="@color/clr_font"
             app:layout_constraintTop_toBottomOf="@+id/textView7" />
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -11,6 +11,8 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import com.google.android.material.navigation.NavigationView;
 import com.mivet.veterinaria.R;
 import com.mivet.veterinaria.usuario.UsuarioMascotasActivity;
+import com.mivet.veterinaria.usuario.UsuarioMensajesActivity;
+import com.mivet.veterinaria.usuario.UsuarioMenuActivity;
 import com.mivet.veterinaria.usuario.UsuarioPerfilActivity;
 import static com.mivet.veterinaria.helpers.SesionUtils.cerrarSesion;
 
@@ -32,8 +34,12 @@ public class DrawerUtils {
 
             if (id == R.id.action_perfil) {
                 activity.startActivity(new Intent(activity, UsuarioPerfilActivity.class));
-            } else if (id == R.id.action_configuracion) {
-                activity.startActivity(new Intent(activity, UsuarioMascotasActivity.class)); // ¿es correcto?
+            } else if (id == R.id.action_mensajes) {
+                activity.startActivity(new Intent(activity, UsuarioMensajesActivity.class));
+            }else if (id == R.id.action_inicio) {
+                    activity.startActivity(new Intent(activity, UsuarioMenuActivity.class));
+            } else if (id == R.id.action_mascotas) {
+                activity.startActivity(new Intent(activity, UsuarioMascotasActivity.class));
             } else if (id == R.id.action_cerrar_sesion) {
                 cerrarSesion(activity);
             }

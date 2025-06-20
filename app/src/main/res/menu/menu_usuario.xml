@@ -1,5 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/action_inicio"
+        android:title="Inicio"
+        android:icon="@drawable/opcioncasa"
+        android:showAsAction="never" />
 
     <item
         android:id="@+id/action_mensajes"
@@ -15,10 +20,10 @@
         android:showAsAction="ifRoom" />
 
     <item
-        android:id="@+id/action_configuracion"
-        android:title="Configuración"
-        android:icon="@drawable/opcionajustes"
-        android:showAsAction="never" />
+        android:id="@+id/action_mascotas"
+        android:title="Mis mascotas"
+        android:icon="@drawable/opcionhuella"
+        android:showAsAction="ifRoom" />
 
     <item
         android:id="@+id/action_cerrar_sesion"
