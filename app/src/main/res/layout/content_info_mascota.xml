@@ -12,12 +12,12 @@
         android:id="@+id/etNombre"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="32dp"
+        android:layout_marginTop="128dp"
         android:enabled="false"
         android:hint="Nombre"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <!-- Raza -->
     <EditText
@@ -52,6 +52,7 @@
         android:layout_marginStart="16dp"
         android:text="Guardar"
         android:visibility="gone"
+        android:backgroundTint="@color/clr_font"
         app:layout_constraintTop_toBottomOf="@id/etFechaNac"
         app:layout_constraintStart_toStartOf="parent" />
 

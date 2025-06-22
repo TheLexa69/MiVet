@@ -1,6 +1,7 @@
 package com.mivet.veterinaria.viewmodels;
 
 import android.content.Context;
+import android.util.Log;
 
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
@@ -64,11 +65,13 @@ public class MascotaVM extends ViewModel {
         mascotaRepository.getTodasLasMascotasAdopcion(new MascotaRepository.MascotasCallback() {
             @Override
             public void onSuccess(List<PetInfo> mascotas) {
+                Log.d("ADOPCION_DEBUG", "Mascotas recibidas: " + (mascotas != null ? mascotas.size() : 0));
                 mascotasAdopcionLD.postValue(mascotas);
             }
 
             @Override
             public void onFailure(Throwable t) {
+                Log.e("ADOPCION_DEBUG", "Error al cargar mascotas", t);
                 mascotasAdopcionLD.postValue(null);
             }
         });
